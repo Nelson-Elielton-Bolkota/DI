@@ -21,4 +21,8 @@ public class Produto {
         this.estoque = estoque;
         this.categoria = categoria;
     }
+    //construtor para criar produtos
+    public Produto(String nome, double preco, int estoque, CategoriaProduto categoria) {
+        this(0, nome, preco, estoque, categoria);
+    }
 }
