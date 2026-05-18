@@ -2,12 +2,10 @@ package src.main.java.com.gestao.model;
 package model;
 
 import src.main.java.com.gestao.enums.StatusPedido;
-
 import java.time.LocalDateTime;
-import java.time.localDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.list;
+
 public class Pedido {
      private int id;
      private Cliente cliente;
