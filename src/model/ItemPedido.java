@@ -1,6 +1,4 @@
 package model;
-package src.main.java.com.gestao.model
-
 public class ItemPedido {
     private int id;
     private int idPedido;
