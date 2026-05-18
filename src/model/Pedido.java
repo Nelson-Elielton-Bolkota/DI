@@ -1,7 +1,7 @@
-package src.main.java.com.gestao.model;
+
 package model;
 
-import src.main.java.com.gestao.enums.StatusPedido;
+import enums.StatusPedido;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
