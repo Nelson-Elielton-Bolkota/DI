@@ -11,5 +11,9 @@ public class Cliente {
         this. email = email;
         
     }
+
+    public Cliente(String nome, String email){
+        this(0, nome, email);
+    }
     
 }
