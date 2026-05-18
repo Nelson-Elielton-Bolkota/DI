@@ -1,5 +1,5 @@
 package model;
 
-public class commit {
+public class Cliente {
     
 }
