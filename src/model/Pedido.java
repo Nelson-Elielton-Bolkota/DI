@@ -26,7 +26,7 @@ public class Pedido {
 
      // Usado ao criar novo pedido
      public Pedido(Cliente cliente){
-          this(0, cliente, StatusPedido.ABERTO, LocalDateTime.now() new ArrayList<>());
+          this(0, cliente, StatusPedido.ABERTO, LocalDateTime.now(), new ArrayList<>());
      }
 
      public int getId(){
