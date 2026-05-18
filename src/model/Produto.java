@@ -41,5 +41,10 @@ public class Produto {
     public CategoriaProduto getCategoria() {
         return categoria;
     }
+    @Override
+    public String toString() {
+        return String.format("[%d] %s | R$ %.2f | Estoque: %d | %s",
+                id, nome, preco, estoque, categoria);
+    }
     
 }
