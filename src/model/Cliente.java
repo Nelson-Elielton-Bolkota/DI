@@ -15,5 +15,22 @@ public class Cliente {
     public Cliente(String nome, String email){
         this(0, nome, email);
     }
-    
+
+    public int getId() {
+        return id;
+    }
+
+    public String getNome(){
+        return nome;
+    }
+
+    public String getEmail(){
+        return email;
+    }
+
+    @Override
+public String toString() {
+    return String.format("ID: %d | Nome: %s | Email: %s", this.id, this.nome, this.email) ;
+}
+
 }
