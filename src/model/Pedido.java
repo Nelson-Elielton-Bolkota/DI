@@ -24,7 +24,7 @@ public class Pedido {
           this.itens = itens != null ? itens : new ArrayList<>();
      }
 
-     // Usado ao criar novo pedido
+     // Construtor para criação de pedido
      public Pedido(Cliente cliente){
           this(0, cliente, StatusPedido.ABERTO, LocalDateTime.now(), new ArrayList<>());
      }
