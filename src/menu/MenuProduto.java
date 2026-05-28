@@ -1,9 +1,11 @@
 package menu;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import DAO.ProdutoDAO;
 import enums.CategoriaProduto;
+import model.Produto;
 
 
 public class MenuProduto {
@@ -46,6 +48,14 @@ public class MenuProduto {
 
         CategoriaProduto categoria = lerCategoria();
         if (categoria == null) return;
+
+        try {
+            Produto produto = new Produto(nome, estoque, estoque, categoria);
+            produtoDAO.salvar(produto);
+            System.out.println("Produto cadastrado com sucesso!");
+        } catch (SQLException e) {
+            System.out.println("Erro ao salvar produto.");
+        }
     }
 
 
