@@ -11,6 +11,11 @@ public class MenuPrincipal {
 	}
 
     private int lerInt() {
-            return Integer.parseInt(scanner.nextLine().trim());
+            try{
+                return Integer.parseInt(scanner.nextLine().trim());
+            }
+            catch(NumberFormatException e){
+                return -1;
+            }
     }
 }
