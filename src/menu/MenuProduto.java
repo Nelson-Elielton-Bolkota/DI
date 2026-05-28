@@ -26,12 +26,19 @@ public class MenuProduto {
             opcao = lerInt();
 
             switch (opcao) {
+                case 1 -> salvar();
                 case 0 -> System.out.println("Voltando...");
                 default -> System.out.println("Opção inválida.");
             }
         }
     }
     
+    private void salvar() {
+        System.out.println("Nome:");
+        String nome = scanner.nextLine().trim();
+
+    }
+
     private int lerInt() {
             try{
                 return Integer.parseInt(scanner.nextLine().trim());
