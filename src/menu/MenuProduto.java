@@ -39,19 +39,34 @@ public class MenuProduto {
         String nome = scanner.nextLine().trim();
 
         Double preco = lerPreco();
+        if (preco<0) return;
 
         System.out.println("Estoque:");
         int estoque = lerInt();
 
         CategoriaProduto categoria = lerCategoria();
-
-        
+        if (categoria == null) return;
     }
 
+
+    //metodos q eu fiz pra ajudar aqui
     private CategoriaProduto lerCategoria() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'lerCategoria'");
+        System.out.println("Categoria:");
+        CategoriaProduto[] categorias = CategoriaProduto.values();
+        
+        for(int i = 0; i< categorias.length; i++){
+            System.out.println((i + 1) + ". " + categorias[i]);
+        }
+        System.out.println("Opção:");
+        int opcao = lerInt();
+
+        if (opcao < 1 || opcao > categorias.length) {
+            System.out.println("Categoria inválida");
+            return null;
+        }
+        return categorias[opcao - 1];
     }
+
     private Double lerPreco() {
         System.out.println("Preço:");
         try {
