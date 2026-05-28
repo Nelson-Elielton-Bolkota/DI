@@ -3,6 +3,7 @@ package menu;
 import java.util.Scanner;
 
 import DAO.ProdutoDAO;
+import enums.CategoriaProduto;
 
 
 public class MenuProduto {
@@ -37,8 +38,29 @@ public class MenuProduto {
         System.out.println("Nome:");
         String nome = scanner.nextLine().trim();
 
+        Double preco = lerPreco();
+
+        System.out.println("Estoque:");
+        int estoque = lerInt();
+
+        CategoriaProduto categoria = lerCategoria();
+
+        
     }
 
+    private CategoriaProduto lerCategoria() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'lerCategoria'");
+    }
+    private Double lerPreco() {
+        System.out.println("Preço:");
+        try {
+            return Double.parseDouble(scanner.nextLine().trim().replace(",", "."));
+        } catch (NumberFormatException e) {
+            System.out.println("Preço Inválido");
+            return -1.0;
+        }
+    }
     private int lerInt() {
             try{
                 return Integer.parseInt(scanner.nextLine().trim());
