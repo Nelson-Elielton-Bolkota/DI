@@ -9,4 +9,8 @@ public class MenuPrincipal {
     public MenuPrincipal(Scanner scanner) {
 		this.scanner = scanner;
 	}
+
+    private int lerInt() {
+            return Integer.parseInt(scanner.nextLine().trim());
+    }
 }
