@@ -44,7 +44,7 @@ public class MenuProduto {
 
         Double preco = lerPreco();
         if (preco < 0){
-            System.out.println("Erro: O estoque não pode ser negativo");
+            System.out.println("Erro: O preço não pode ser negativo");
             return;
         }
 
