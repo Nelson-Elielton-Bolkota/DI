@@ -16,6 +16,7 @@ public class ItemPedidoDAO {
         PreparedStatement ps = conn.prepareStatement(sql)){
             ps.setInt(1, ItemPedido.getQuantidade());
             ps.setDouble(2, ItemPedido.getPrecoUnitario());
+            ps.executeUpdate();
         }
 
     }
