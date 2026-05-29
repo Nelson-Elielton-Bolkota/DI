@@ -70,14 +70,16 @@ public class ProdutoDAO {
     }
 
     public List<Produto> buscarPorNome(String nome) throws SQLException {
-        String sql = "select id_produto, nome, preco, estoque, categoria from produtos where nome = ?";
+        String sql = "select id_produto, nome, preco, estoque, categoria from produtos where nome like  ?";
         List<Produto> lista = new ArrayList<>();
 
         try (Connection conn = Conexao.conectar();
                 PreparedStatement ps = conn.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()) {
+                ) {
 
             ps.setString(1, "%" + nome + "%");
+
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 lista.add(new Produto(
@@ -88,10 +90,7 @@ public class ProdutoDAO {
                         CategoriaProduto.valueOf(rs.getString("categoria"))));
             }
 
-        } catch (SQLException e) {
-            System.out.println("ERRO: falha ao buscar produto");
         }
-
         return lista;
     }
 }
