@@ -24,12 +24,14 @@ public class ItemPedidoDAO {
     String sql = "select id, id_pedido, id_produto, quantidade, preco_Unitario from itempedido order by id";
     List<ItemPedido> lista = new ArrayList<>();
 
+    ProdutoDAO produtoDAO = new ProdutoDAO();
+
     try (Connection conn = Conexao.conectar();
          PreparedStatement ps = conn.prepareStatement(sql);
          ResultSet rs = ps.executeQuery()) {
 
         while (rs.next()) {
-            Produto produto = produto.DAO.buscarPorID(rs.getInt("id_produto")); // Faz a busca pelo id do produto na Classe ProdutoDAO
+            Produto produto = produtoDAO.buscarPorId(rs.getInt("id_produto")); // Faz a busca pelo id do produto na Classe ProdutoDAO
 
             lista.add(new ItemPedido(
                 rs.getInt("id"),
