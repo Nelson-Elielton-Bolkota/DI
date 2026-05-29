@@ -10,7 +10,7 @@ import model.Produto;
 
 public class MenuProduto {
     private Scanner scanner;
-    private final ProdutoDAO produtoDAO = new ProdutoDAO();
+    private ProdutoDAO produtoDAO = new ProdutoDAO();
 
     public MenuProduto(Scanner scanner) {
         this.scanner = scanner;
@@ -40,7 +40,7 @@ public class MenuProduto {
     
     private void salvar() {
         System.out.println("Nome:");
-        String nome = scanner.nextLine().trim();
+        String nome = MenuPrincipal.removerAcentos(scanner.nextLine().trim()) ;
 
         Double preco = lerPreco();
         if (preco<0) return;
@@ -52,7 +52,7 @@ public class MenuProduto {
         if (categoria == null) return;
 
         try {
-            Produto produto = new Produto(nome, estoque, estoque, categoria);
+            Produto produto = new Produto(nome, preco, estoque, categoria);
             produtoDAO.salvar(produto);
             System.out.println("Produto cadastrado com sucesso!");
         } catch (SQLException e) {
