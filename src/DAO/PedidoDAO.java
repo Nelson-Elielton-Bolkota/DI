@@ -48,8 +48,8 @@ public class PedidoDAO {
             ));
         }
 
-    } // fecha o try
+    } 
 
-    return lista; // dentro do método, fora do try
+    return lista;
 }
 }
