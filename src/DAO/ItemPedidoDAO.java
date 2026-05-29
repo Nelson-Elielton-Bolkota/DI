@@ -14,39 +14,33 @@ public class ItemPedidoDAO {
 
         try(Connection conn = Conexao.conectar();
         PreparedStatement ps = conn.prepareStatement(sql)){
-            ps.setInt(1, ItemPedido.getQuantidade());
-            ps.setDouble(2, ItemPedido.getPrecoUnitario());
+            ps.setInt(1, item_pedido.getQuantidade());
+            ps.setDouble(2, item_pedido.getPrecoUnitario());
             ps.executeUpdate();
         }
     }
 
-    public List<ItemPedido> buscarTodos() throws SQLException{
-        String sql = "select id, id_pedido, id_produto, quantidade, preco_Unitario from itempedido order by id";
-        List<ItemPedido> lista = new ArrayList<>();
+    public List<ItemPedido> buscarTodos() throws SQLException {
+    String sql = "select id, id_pedido, id_produto, quantidade, preco_Unitario from itempedido order by id";
+    List<ItemPedido> lista = new ArrayList<>();
 
-        try(Connection conn = Conexao.conectar();
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery()) {
+    try (Connection conn = Conexao.conectar();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
 
-            while(rs.next()){
-                int id_pedido = new Pedido(
-                    rs.getInt("id_pedido")
-                );
-                Produto id_produto = new Produto(
-                    rs.getInt("id_produto")
-                );
+        while (rs.next()) {
+            Produto produto = produto.DAO.buscarPorID(rs.getInt("id_produto")); // Faz a busca pelo id do produto na Classe ProdutoDAO
 
-                lista.add(new ItemPedido(
-                    rs.getInt("id_pedido"),
-                    pedido,
-                    rs.getInt("id_produto"),
-                    produto,
-                    rs.getInt("quantidade"),
-                    rs.getDouble("preco_Unitario")
-                ));
-            }
+            lista.add(new ItemPedido(
+                rs.getInt("id"),
+                rs.getInt("id_pedido"),
+                produto,
+                rs.getInt("quantidade"),
+                rs.getDouble("preco_Unitario")
+            ));
         }
-
-        return lista;
     }
+
+    return lista;
+}
 }
