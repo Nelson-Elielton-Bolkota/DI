@@ -23,7 +23,7 @@ public class MenuProduto {
             System.out.println("----------------------------");
             System.out.println("1. Cadastrar produto");
             System.out.println("2. Listar todos os produtos");
-            System.out.println("3. Listar por categoria");
+            System.out.println("3. Listar por nome");
             System.out.println("0. Voltar");
             System.out.print("Opção: ");
 
@@ -32,6 +32,7 @@ public class MenuProduto {
             switch (opcao) {
                 case 1 -> salvar();
                 case 2 -> buscarTodos();
+                case 3 -> buscarPorNome();
                 case 0 -> System.out.println("Voltando...");
                 default -> System.out.println("Opção inválida.");
             }
@@ -40,11 +41,12 @@ public class MenuProduto {
 
     private void salvar() {
         System.out.println("Nome:");
-        String nome = MenuPrincipal.removerAcentos(scanner.nextLine().trim());
+        // String nome = MenuPrincipal.removerAcentos(scanner.nextLine().trim());
+        String nome = scanner.nextLine().trim();
 
         Double preco = lerPreco();
-        if (preco < 0){
-            System.out.println("Erro: O estoque não pode ser negativo");
+        if (preco < 0) {
+            System.out.println("Erro: O preço não pode ser negativo");
             return;
         }
 
@@ -69,8 +71,24 @@ public class MenuProduto {
     }
 
     private void buscarTodos() {
+        try {
+            List<Produto> produtos = produtoDAO.buscarTodos();
+            if (produtos.isEmpty()) {
+                System.out.println("nenhum produto foi encontrado");
+                return;
+            }
+            System.out.println("PRODUTOS");
+            produtos.forEach(System.out::println);
+        } catch (SQLException e) {
+            System.out.println("ERRO: falha ao listar produtos " + e.getMessage());
+        }
+    }
+
+    private void buscarPorNome() {
+        System.out.println("Digite o nome do produto:");
+        String nome = MenuPrincipal.removerAcentos(scanner.nextLine().trim());
         try{
-            List<Produto>produtos =  produtoDAO.buscarTodos();
+            List<Produto>produtos =  produtoDAO.buscarPorNome(nome);
         if (produtos.isEmpty()) {
             System.out.println("nenhum produto foi encontrado");
             return;
