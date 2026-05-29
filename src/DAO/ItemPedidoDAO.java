@@ -46,5 +46,7 @@ public class ItemPedidoDAO {
                 ));
             }
         }
+
+        return lista;
     }
 }
