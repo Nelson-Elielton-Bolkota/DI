@@ -1,6 +1,7 @@
 package menu;
 
 import java.util.Scanner;
+import java.text.Normalizer;
 
 public class MenuPrincipal {
     
@@ -42,4 +43,11 @@ public class MenuPrincipal {
                 return -1;
             }
     }
+
+//metodo para remover acentos antes de mandar ao banco
+private String removerAcentos(String texto) {
+    if (texto == null) return null;
+    String textoNormalizado = Normalizer.normalize(texto, Normalizer.Form.NFD);
+    return textoNormalizado.replaceAll("\\p{M}", "");
+}
 }
