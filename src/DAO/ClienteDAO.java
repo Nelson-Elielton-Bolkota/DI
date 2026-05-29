@@ -16,7 +16,13 @@ public class ClienteDAO {
         ps.setString(1, cliente.getNome());
         ps.setString(2, cliente.getEmail());
         ps.executeUpdate();
-        
         }
     }
+
+public List<Cliente> buscarTodos() throws SQLException {
+    String sql = "select id, nome, email from clientes order by nome";
+    List<Cliente> lista = new ArrayList<>();
+
+    
+}
 }
