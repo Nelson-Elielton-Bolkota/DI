@@ -30,11 +30,13 @@ public class MenuProduto {
 
             switch (opcao) {
                 case 1 -> salvar();
+                case 2 -> buscarTodos();
                 case 0 -> System.out.println("Voltando...");
                 default -> System.out.println("Opção inválida.");
             }
         }
     }
+    
     
     private void salvar() {
         System.out.println("Nome:");
@@ -56,6 +58,11 @@ public class MenuProduto {
         } catch (SQLException e) {
             System.out.println("Erro ao salvar produto.");
         }
+    }
+
+    private Object buscarTodos() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'buscarTodos'");
     }
 
 
