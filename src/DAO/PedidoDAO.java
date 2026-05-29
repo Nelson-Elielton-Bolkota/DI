@@ -1,10 +1,12 @@
 package DAO;
-import infra.*;
-import model.Pedido;
 import enums.*;
+import infra.*;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import model.Cliente;
+import model.Pedido;
 
 
 public class PedidoDAO {
@@ -13,30 +15,41 @@ public class PedidoDAO {
 
         try(Connection conn = Conexao.conectar();
         PreparedStatement ps = conn.prepareStatement(sql)){
-            ps.setLocalDateTime(1, getDataCriacao());
-            ps.setStatusPedido(2, getStatus().name());
+            ps.setTimestamp(1, Timestamp.valueOf(pedido.getDataCriacao()));
+            ps.setString(2, pedido.getStatus().name());
             ps.executeUpdate();
         }
     }
 
-    public List<Pedido> buscarTodos() throws SQLException{
-        String sql = "select id_pedido, id_cliente, dataCriacao, statusPedido from pedidos order by id_cliente";
-        List<Pedido> lista = new ArrayList<>();
 
-        try(Connection conn = Conexao.conectar();
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery()){
-            
-            while(rs.next()){
-                lista.add(new Pedido(
-                    rs.getInt("id"),
-                    rs.getString("id_cliente"),
-                    rs.getString("dataCriacao"),
-                    StatusPedido.valueOf(rs.getString("statusPedido"))));
-            }
+    public List<Pedido> buscarTodos() throws SQLException {
+    String sql = "select id_pedido, id_cliente, dataCriacao, statusPedido from pedidos order by id_cliente";
+    List<Pedido> lista = new ArrayList<>();
 
+    try (Connection conn = Conexao.conectar();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            Cliente cliente = new Cliente(
+                rs.getInt("id_cliente"),
+                "",
+                ""
+            );
+
+            LocalDateTime dataCriacao = rs.getTimestamp("dataCriacao").toLocalDateTime();
+
+            lista.add(new Pedido(
+                rs.getInt("id_pedido"),
+                cliente,
+                StatusPedido.valueOf(rs.getString("statusPedido")),
+                dataCriacao,
+                null
+            ));
         }
 
-        return lista;
-    }
+    } // fecha o try
+
+    return lista; // dentro do método, fora do try
+}
 }
