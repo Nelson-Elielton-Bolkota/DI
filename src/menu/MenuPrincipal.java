@@ -1,14 +1,15 @@
 package menu;
 
 import java.util.Scanner;
+import java.text.Normalizer;
 
 public class MenuPrincipal {
-    
+
     private Scanner scanner;
 
     public MenuPrincipal(Scanner scanner) {
-		this.scanner = scanner;
-	}
+        this.scanner = scanner;
+    }
 
     public void iniciar() {
         int opcao = -1;
@@ -35,11 +36,20 @@ public class MenuPrincipal {
     }
 
     private int lerInt() {
-            try{
-                return Integer.parseInt(scanner.nextLine().trim());
-            }
-            catch(NumberFormatException e){
-                return -1;
-            }
+        try {
+            return Integer.parseInt(scanner.nextLine().trim());
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    // metodo para remover acentos antes de mandar ao banco
+    public static String removerAcentos(String texto) {
+        if (texto == null)
+            return null;
+        String textoNormalizado = Normalizer.normalize(texto, Normalizer.Form.NFD);
+        textoNormalizado = textoNormalizado.replaceAll("\\p{M}", "");
+        
+        return textoNormalizado.replaceAll("[~^`´¨]", "");
     }
 }
