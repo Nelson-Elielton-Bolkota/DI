@@ -18,6 +18,33 @@ public class ItemPedidoDAO {
             ps.setDouble(2, ItemPedido.getPrecoUnitario());
             ps.executeUpdate();
         }
+    }
 
+    public List<ItemPedido> buscarTodos() throws SQLException{
+        String sql = "select id, id_pedido, id_produto, quantidade, preco_Unitario from itempedido order by id";
+        List<ItemPedido> lista = new ArrayList<>();
+
+        try(Connection conn = Conexao.conectar();
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery()) {
+
+            while(rs.next()){
+                int id_pedido = new Pedido(
+                    rs.getInt("id_pedido")
+                );
+                Produto id_produto = new Produto(
+                    rs.getInt("id_produto")
+                );
+
+                lista.add(new ItemPedido(
+                    rs.getInt("id_pedido"),
+                    pedido,
+                    rs.getInt("id_produto"),
+                    produto,
+                    rs.getInt("quantidade"),
+                    rs.getDouble("preco_Unitario")
+                ));
+            }
+        }
     }
 }
