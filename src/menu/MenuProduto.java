@@ -41,7 +41,8 @@ public class MenuProduto {
 
     private void salvar() {
         System.out.println("Nome:");
-        String nome = MenuPrincipal.removerAcentos(scanner.nextLine().trim());
+        // String nome = MenuPrincipal.removerAcentos(scanner.nextLine().trim());
+        String nome = scanner.nextLine().trim();
 
         Double preco = lerPreco();
         if (preco < 0) {
