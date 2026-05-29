@@ -1,12 +1,12 @@
 package menu;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 import DAO.ProdutoDAO;
 import enums.CategoriaProduto;
 import model.Produto;
-
 
 public class MenuProduto {
     private Scanner scanner;
@@ -15,6 +15,7 @@ public class MenuProduto {
     public MenuProduto(Scanner scanner) {
         this.scanner = scanner;
     }
+
     public void exibir() {
         int opcao = -1;
         while (opcao != 0) {
@@ -36,24 +37,25 @@ public class MenuProduto {
             }
         }
     }
-    
-    
+
     private void salvar() {
         System.out.println("Nome:");
-        String nome = MenuPrincipal.removerAcentos(scanner.nextLine().trim()) ;
+        String nome = MenuPrincipal.removerAcentos(scanner.nextLine().trim());
 
         Double preco = lerPreco();
-        if (preco<0) return;
+        if (preco < 0)
+            return;
 
         System.out.println("Estoque:");
         int estoque = lerInt();
-        if(estoque<0){
+        if (estoque < 0) {
             System.out.println("Erro: O estoque não pode ser negativo");
             return;
         }
 
         CategoriaProduto categoria = lerCategoria();
-        if (categoria == null) return;
+        if (categoria == null)
+            return;
 
         try {
             Produto produto = new Produto(nome, preco, estoque, categoria);
@@ -64,18 +66,26 @@ public class MenuProduto {
         }
     }
 
-    private Object buscarTodos() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'buscarTodos'");
+    private void buscarTodos() {
+        try{
+            List<Produto>produtos =  produtoDAO.buscarTodos();
+        if (produtos.isEmpty()) {
+            System.out.println("nenhum produto foi encontrado");
+            return;
+        }
+        System.out.println("PRODUTOS");
+        produtos.forEach(System.out::println);
+        } catch(SQLException e){
+            System.out.println("ERRO: falha ao listar produtos " + e.getMessage());
+        }
     }
 
-
-    //metodos q eu fiz pra ajudar aqui
+    // metodos q eu fiz pra ajudar aqui
     private CategoriaProduto lerCategoria() {
         System.out.println("Categoria:");
         CategoriaProduto[] categorias = CategoriaProduto.values();
-        
-        for(int i = 0; i< categorias.length; i++){
+
+        for (int i = 0; i < categorias.length; i++) {
             System.out.println((i + 1) + ". " + categorias[i]);
         }
         System.out.println("Opção:");
@@ -97,12 +107,12 @@ public class MenuProduto {
             return -1.0;
         }
     }
+
     private int lerInt() {
-            try{
-                return Integer.parseInt(scanner.nextLine().trim());
-            }
-            catch(NumberFormatException e){
-                return -1;
-            }
+        try {
+            return Integer.parseInt(scanner.nextLine().trim());
+        } catch (NumberFormatException e) {
+            return -1;
+        }
     }
 }

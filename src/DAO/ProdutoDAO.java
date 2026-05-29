@@ -33,9 +33,9 @@ public class ProdutoDAO {
 
             while (rs.next()) {
                 lista.add(new Produto(
-                        rs.getInt("id"),
+                        rs.getInt("id_produto"),
                         rs.getString("nome"),
-                        rs.getDouble("preço"),
+                        rs.getDouble("preco"),
                         rs.getInt("estoque"),
                         CategoriaProduto.valueOf(rs.getString("categoria"))));
             }
