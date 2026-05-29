@@ -23,6 +23,18 @@ public List<Cliente> buscarTodos() throws SQLException {
     String sql = "select id, nome, email from clientes order by nome";
     List<Cliente> lista = new ArrayList<>();
 
-    
+    try(Connection conn = Conexao.conectar();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                lista.add(new Cliente(
+                    rs.getInt("id"),
+                    rs.getString("nome"),
+                    rs.getString("Email")
+                ));
+            }
+         }
+         return lista;
 }
 }
