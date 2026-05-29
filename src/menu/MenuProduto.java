@@ -47,6 +47,10 @@ public class MenuProduto {
 
         System.out.println("Estoque:");
         int estoque = lerInt();
+        if(estoque<0){
+            System.out.println("Erro: O estoque não pode ser negativo");
+            return;
+        }
 
         CategoriaProduto categoria = lerCategoria();
         if (categoria == null) return;
