@@ -19,3 +19,24 @@ public class PedidoDAO {
         }
     }
 
+    public List<Pedido> buscarTodos() throws SQLException{
+        String sql = "select id_pedido, id_cliente, dataCriacao, statusPedido from pedidos order by id_cliente";
+        List<Pedido> lista = new ArrayList<>();
+
+        try(Connection conn = Conexao.conectar();
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery()){
+            
+            while(rs.next()){
+                lista.add(new Pedido(
+                    rs.getInt("id"),
+                    rs.getString("id_cliente"),
+                    rs.getString("dataCriacao"),
+                    StatusPedido.valueOf(rs.getString("statusPedido"))));
+            }
+
+        }
+
+        return lista;
+    }
+}
