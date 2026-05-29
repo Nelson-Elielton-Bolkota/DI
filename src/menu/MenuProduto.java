@@ -43,8 +43,10 @@ public class MenuProduto {
         String nome = MenuPrincipal.removerAcentos(scanner.nextLine().trim());
 
         Double preco = lerPreco();
-        if (preco < 0)
+        if (preco < 0){
+            System.out.println("Erro: O estoque não pode ser negativo");
             return;
+        }
 
         System.out.println("Estoque:");
         int estoque = lerInt();
