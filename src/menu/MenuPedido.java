@@ -47,4 +47,21 @@ public class MenuPedido {
                 }
             }
     }
+
+            private void criarPedido(){
+                // Seleciona o Cliente
+
+                List<Cliente> clientes;
+                try{
+                    clientes = clienteDAO.buscarTodos();
+                } catch(SQLException e){
+                    System.out.println("Erro ao carregar os clientes!!" + e.getMessage());
+                    return;
+                }
+
+                if(clientes.isEmpty()){
+                    System.out.println("Nenhum cliente cadastrado. Cadastre um cliente primeiro!!");
+                    return;
+                }
+            }
 }
