@@ -25,6 +25,26 @@ public class MenuPedido {
     }
     
     public void exibir(){
-        
+        int opcao = -1;
+            while(opcao != 0){
+                System.out.println("=== MENU PEDIDOS ===");
+                System.out.println("1. Criar Pedido");
+                System.out.println("2. Listar Pedidos");
+                System.out.println("3. Relatório: total por cliente");
+                System.out.println("4. Relatório: produtos mais vendidos");
+                System.out.println("0. Voltar");
+                System.out.print("Opção: ");
+
+                opcao = lerInt();
+
+                switch(opcao){
+                    case 1 -> criarPedido();
+                    case 2 -> listarPedidos();
+                    case 3 -> relatorioClientes();
+                    case 4 -> relatorioProdutos();
+                    case 0 -> System.out.println("Voltando...");
+                    default -> System.out.println("Opção Invalida");
+                }
+            }
     }
 }
