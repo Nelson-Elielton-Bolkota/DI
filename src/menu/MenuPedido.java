@@ -63,5 +63,21 @@ public class MenuPedido {
                     System.out.println("Nenhum cliente cadastrado. Cadastre um cliente primeiro!!");
                     return;
                 }
+
+                System.out.println("Clientes Disponiveis: ");
+                clientes.forEach(System.out::println);
+                System.out.print("ID do cliente: ");
+                int idCliente = lerInt();
+
+                Cliente clienteSelecionado = clientes.stream()
+                        .filter(c -> getId() == idCliente)
+                        .findFirst()
+                        .orElse(null);
+
+                
+                if(clienteSelecionado == null){
+                    System.out.println("Cliente não encontrado!! ");
+                    return;
+                }
             }
 }
