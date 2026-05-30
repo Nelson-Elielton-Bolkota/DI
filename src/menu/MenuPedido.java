@@ -79,14 +79,24 @@ public class MenuPedido {
                     System.out.println("Cliente não encontrado!! ");
                     return;
                 }
-            }
+    
 
             // Montagem de Pedidos
 
             Pedido pedido = new Pedido(clienteSelecionado);
 
             List<Produto> produtos;
-            try{
-                
+            try {
+                produtos = produtoDAO.buscarTodos();
+            } catch(SQLException e){
+                System.out.println("Erro ao carregar os produtos!! " + e.getMessage());
+                return;
             }
+
+            if(produtos.isEmpty()){
+                System.out.println("Nenhum produto cadastrado!!");
+                return;
+            }
+            
+}
 }
