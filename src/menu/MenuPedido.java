@@ -16,6 +16,9 @@ import java.util.Scanner;
 
 public class MenuPedido {
     private Scanner scanner;
+    private ProdutoDAO produtoDAO = new ProdutoDAO();
+    private ClienteDAO clienteDAO = new ClienteDAO();
+    private PedidoDAO pedidoDAO = new PedidoDAO();
 
     public MenuPedido(Scanner scanner) {
         this.scanner = scanner;
