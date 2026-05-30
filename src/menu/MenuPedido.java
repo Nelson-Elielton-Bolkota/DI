@@ -80,4 +80,13 @@ public class MenuPedido {
                     return;
                 }
             }
+
+            // Montagem de Pedidos
+
+            Pedido pedido = new Pedido(clienteSelecionado);
+
+            List<Produto> produtos;
+            try{
+                
+            }
 }
