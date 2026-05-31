@@ -20,7 +20,7 @@ public class ClienteDAO {
     }
 
 public List<Cliente> buscarTodos() throws SQLException {
-    String sql = "select id, nome, email from cliente order by nome";
+    String sql = "select id_cliente, nome, email from cliente order by nome";
     List<Cliente> lista = new ArrayList<>();
 
     try(Connection conn = Conexao.conectar();
@@ -29,7 +29,7 @@ public List<Cliente> buscarTodos() throws SQLException {
 
             while (rs.next()) {
                 lista.add(new Cliente(
-                    rs.getInt("id"),
+                    rs.getInt("id_cliente"),
                     rs.getString("nome"),
                     rs.getString("Email")
                 ));
