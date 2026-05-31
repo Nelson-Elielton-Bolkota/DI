@@ -143,16 +143,16 @@ public class MenuPedido {
             // Salva o pedido com a transação
 
             try{
-                List<Pedido> pedidos = pedidoDAO.buscarTodos();
-                if(pedidos.isEmpty()){
-                    System.out.println("Nenhum pedido encontrado!!");
-                    return;
-                }
-                System.out.println(" === PEDIDOS === ");
-                pedidos.forEach(System.out::println);
-            } 
-            catch(SQLException e){
-                System.out.println("Erro ao listar pedidos!! " + e.getMessage());
+                pedidoDAO.salvar(pedido);
+                System.out.println("Pedido criado com sucesso! Status: FILA(Será processado em breve)");
+            } catch(EstoqueInsuficienteException e){
+                System.out.println("Pedido não criado!! " + e.getMessage());
+            } catch(SQLException e){
+                System.out.println("Erro ao salvar o pedido!!" + e.getMessage());
             }
+
+         
     }
+
+        
 }
