@@ -131,8 +131,13 @@ public class MenuPedido {
                     continue;
                 }
 
-                
-            
+                pedido.getItens().add(new ItemPedido(0, produtoSelecionado, quantidade));
+                System.out.println("Item adicionado: " + produtoSelecionado.getNome() + " x" + quantidade);
+            }
+
+            if(pedido.getItens().isEmpty()) {
+                System.out.println("Pedido cancelado --- nenhum item adicionado!!!");
+                return;
             }
 
         
