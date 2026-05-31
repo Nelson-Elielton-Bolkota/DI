@@ -2,6 +2,8 @@ package DAO;
 
 import infra.*;
 import model.Cliente;
+import model.Produto;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,13 +40,25 @@ public List<Cliente> buscarTodos() throws SQLException {
          return lista;
 }
 
-public Cliente buscarPorId(int id_cliente) throws SQLException {
+public Cliente buscarPorId(int id) throws SQLException {
+
     String sql = "SELECT id, nome, email from clientes where id = ?";
     
 
     try(Connection conn = Conexao.conectar();
-        PreparedStatement ps = conn.prepareStatement(sql) {
+        PreparedStatement ps = conn.prepareStatement(sql)) {
             
-        })
+        ps.setInt(1, id);
+
+        try(ResultSet rs = ps.executeQuery()) {
+            if(rs.next()) {
+                return new Cliente(
+                    rs.getInt("id"),
+                    rs.getString("nome"),
+                    rs.getString("email")
+                );
+            }
+        }
+        }
 }
 }
