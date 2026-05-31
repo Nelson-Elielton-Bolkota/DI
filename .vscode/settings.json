@@ -3,5 +3,7 @@
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
         "lib/mysql-connector-j-9.6.0.jar"
-    ]
+    ],
+
+     "java.debug.settings.console": "externalTerminal"
 }
