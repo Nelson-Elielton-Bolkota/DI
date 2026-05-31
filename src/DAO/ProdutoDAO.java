@@ -93,4 +93,7 @@ public class ProdutoDAO {
         }
         return lista;
     }
+    public List<Produto> buscarPorCategoria(String nome) throws SQLException{
+        
+    }
 }
