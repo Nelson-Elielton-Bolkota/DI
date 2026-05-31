@@ -49,7 +49,7 @@ public class PedidoDAO {
             idPedidoGerado = rs.getInt(1);
         }
 
-        String sqlItem = "INSERT INTO itens_pedido(id_pedido, id_produto, quantidade, precoUnitario) VALUES (?, ?, ?, ?)";
+        String sqlItem = "INSERT INTO itempedido(id_pedido, id_produto, quantidade, precoUnitario) VALUES (?, ?, ?, ?)";
         String sqlDesconto = "UPDATE produtos SET estoque = estoque - ? WHERE id_produto = ?";
 
         for (ItemPedido item : pedido.getItens()) {
@@ -89,20 +89,18 @@ public class PedidoDAO {
             int idCliente = rs.getInt("id_cliente");
             int idPedido = rs.getInt("id_pedido");
 
-            // Busca cliente
             Cliente cliente = null;
-            String sqlCliente = "SELECT id, nome, email FROM cliente WHERE id = ?";
+            String sqlCliente = "SELECT id_cliente, nome, email FROM cliente WHERE id_cliente = ?";
             try (PreparedStatement psC = conn.prepareStatement(sqlCliente)) {
                 psC.setInt(1, idCliente);
                 ResultSet rsC = psC.executeQuery();
                 if (rsC.next()) {
-                    cliente = new Cliente(rsC.getInt("id"), rsC.getString("nome"), rsC.getString("email"));
+                    cliente = new Cliente(rsC.getInt("id_cliente"), rsC.getString("nome"), rsC.getString("email"));
                 }
             }
 
-            // Busca itens
             List<ItemPedido> itens = new ArrayList<>();
-            String sqlItens = "SELECT id_item, id_produto, quantidade FROM itens_pedido WHERE id_pedido = ?";
+            String sqlItens = "SELECT id_item, id_produto, quantidade FROM itempedido WHERE id_pedido = ?";
             try (PreparedStatement psI = conn.prepareStatement(sqlItens)) {
                 psI.setInt(1, idPedido);
                 ResultSet rsI = psI.executeQuery();
@@ -142,7 +140,7 @@ public class PedidoDAO {
 
     public void relatorioTotalPorCliente() throws SQLException {
         String sqlPedidos = "SELECT id_pedido, id_cliente FROM pedidos";
-        String sqlItens = "SELECT quantidade, precoUnitario FROM itens_pedido WHERE id_pedido = ?";
+        String sqlItens = "SELECT quantidade, precoUnitario FROM itempedido WHERE id_pedido = ?";
 
         System.out.println("=== RELATÓRIO: TOTAL POR CLIENTE ===");
         System.out.printf("%-25s %-15s %-15s%n", "Cliente", "Pedidos", "Valor Total");
@@ -173,7 +171,7 @@ public class PedidoDAO {
             }
 
             for (java.util.Map.Entry<Integer, double[]> entry : totaisPorCliente.entrySet()) {
-                String sqlCliente = "SELECT nome FROM cliente WHERE id = ?";
+                String sqlCliente = "SELECT nome FROM cliente WHERE id_cliente = ?";
                 try (PreparedStatement psCliente = conn.prepareStatement(sqlCliente)) {
                     psCliente.setInt(1, entry.getKey());
                     ResultSet rsCliente = psCliente.executeQuery();
@@ -189,7 +187,7 @@ public class PedidoDAO {
     }
 
     public void relatorioProdutosMaisVendidos() throws SQLException {
-        String sqlItens = "SELECT id_produto, quantidade FROM itens_pedido";
+        String sqlItens = "SELECT id_produto, quantidade FROM itempedido";
 
         System.out.println("=== RELATÓRIO: PRODUTOS MAIS VENDIDOS ===");
         System.out.printf("%-30s %-15s%n", "Produto", "Qtd Vendida");
