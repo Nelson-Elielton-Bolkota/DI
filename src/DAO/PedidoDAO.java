@@ -6,52 +6,133 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import model.Cliente;
+import model.ItemPedido;
 import model.Pedido;
 import model.Produto;
 
 
 public class PedidoDAO {
-    public void salvar(Pedido pedido) throws SQLException{
-        String sql = "insert into pedidos(dataCriacao, statusPedido) values (?,?)";
+   public void salvar(Pedido pedido) throws SQLException, EstoqueInsuficienteException {
+    Connection conn = null;
+    try {
+        conn = Conexao.conectar();
+        conn.setAutoCommit(false);
 
-        try(Connection conn = Conexao.conectar();
-        PreparedStatement ps = conn.prepareStatement(sql)){
-            ps.setTimestamp(1, Timestamp.valueOf(pedido.getDataCriacao()));
-            ps.setString(2, pedido.getStatus().name());
-            ps.executeUpdate();
-        }
-    }
-
-
-    public List<Pedido> buscarTodos() throws SQLException {
-        String sql = "select id_pedido, id_cliente, dataCriacao, statusPedido from pedidos order by id_cliente";
-        List<Pedido> lista = new ArrayList<>();
-
-        try (Connection conn = Conexao.conectar();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                Cliente cliente = new Cliente(
-                    rs.getInt("id_cliente"),
-                    "",
-                    ""
-                );
-
-                LocalDateTime dataCriacao = rs.getTimestamp("dataCriacao").toLocalDateTime();
-
-                lista.add(new Pedido(
-                    rs.getInt("id_pedido"),
-                    cliente,
-                    StatusPedido.valueOf(rs.getString("statusPedido")),
-                    dataCriacao,
-                    null
-                ));
+        for (ItemPedido item : pedido.getItens()) {
+            String sqlEstoque = "SELECT estoque FROM produtos WHERE id_produto = ?";
+            try (PreparedStatement ps = conn.prepareStatement(sqlEstoque)) {
+                ps.setInt(1, item.getProduto().getId());
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    int estoqueAtual = rs.getInt("estoque");
+                    if (item.getQuantidade() > estoqueAtual) {
+                        throw new EstoqueInsuficienteException(
+                            "Estoque insuficiente para: " + item.getProduto().getNome()
+                            + " | Disponível: " + estoqueAtual
+                            + " | Solicitado: " + item.getQuantidade()
+                        );
+                    }
+                }
             }
         }
 
-        return lista;
+        String sqlPedido = "INSERT INTO pedidos(id_cliente, dataCriacao, statusPedido) VALUES (?, ?, ?)";
+        int idPedidoGerado;
+        try (PreparedStatement ps = conn.prepareStatement(sqlPedido, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setInt(1, pedido.getCliente().getId());
+            ps.setTimestamp(2, Timestamp.valueOf(pedido.getDataCriacao()));
+            ps.setString(3, pedido.getStatus().name());
+            ps.executeUpdate();
+
+            ResultSet rs = ps.getGeneratedKeys();
+            if (!rs.next()) throw new SQLException("Falha ao obter ID do pedido.");
+            idPedidoGerado = rs.getInt(1);
+        }
+
+        String sqlItem = "INSERT INTO itens_pedido(id_pedido, id_produto, quantidade, precoUnitario) VALUES (?, ?, ?, ?)";
+        String sqlDesconto = "UPDATE produtos SET estoque = estoque - ? WHERE id_produto = ?";
+
+        for (ItemPedido item : pedido.getItens()) {
+            try (PreparedStatement ps = conn.prepareStatement(sqlItem)) {
+                ps.setInt(1, idPedidoGerado);
+                ps.setInt(2, item.getProduto().getId());
+                ps.setInt(3, item.getQuantidade());
+                ps.setDouble(4, item.getProduto().getPreco());
+                ps.executeUpdate();
+            }
+            try (PreparedStatement ps = conn.prepareStatement(sqlDesconto)) {
+                ps.setInt(1, item.getQuantidade());
+                ps.setInt(2, item.getProduto().getId());
+                ps.executeUpdate();
+            }
+        }
+
+        conn.commit();
+
+    } catch (EstoqueInsuficienteException | SQLException e) {
+        if (conn != null) conn.rollback();
+        throw e;
+    } finally {
+        if (conn != null) conn.close();
     }
+}
+
+   public List<Pedido> buscarTodos() throws SQLException {
+    String sql = "SELECT id_pedido, id_cliente, dataCriacao, statusPedido FROM pedidos ORDER BY id_pedido";
+    List<Pedido> lista = new ArrayList<>();
+
+    try (Connection conn = Conexao.conectar();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            int idCliente = rs.getInt("id_cliente");
+            int idPedido = rs.getInt("id_pedido");
+
+            // Busca cliente
+            Cliente cliente = null;
+            String sqlCliente = "SELECT id_cliente, nome, email FROM clientes WHERE id_cliente = ?";
+            try (PreparedStatement psC = conn.prepareStatement(sqlCliente)) {
+                psC.setInt(1, idCliente);
+                ResultSet rsC = psC.executeQuery();
+                if (rsC.next()) {
+                    cliente = new Cliente(rsC.getInt("id_cliente"), rsC.getString("nome"), rsC.getString("email"));
+                }
+            }
+
+            // Busca itens
+            List<ItemPedido> itens = new ArrayList<>();
+            String sqlItens = "SELECT id_item, id_produto, quantidade FROM itens_pedido WHERE id_pedido = ?";
+            try (PreparedStatement psI = conn.prepareStatement(sqlItens)) {
+                psI.setInt(1, idPedido);
+                ResultSet rsI = psI.executeQuery();
+                while (rsI.next()) {
+                    int idProduto = rsI.getInt("id_produto");
+                    Produto produto = null;
+                    String sqlProduto = "SELECT id_produto, nome, preco, estoque FROM produtos WHERE id_produto = ?";
+                    try (PreparedStatement psP = conn.prepareStatement(sqlProduto)) {
+                        psP.setInt(1, idProduto);
+                        ResultSet rsP = psP.executeQuery();
+                        if (rsP.next()) {
+                            produto = new Produto(rsP.getInt("id_produto"), rsP.getString("nome"), rsP.getDouble("preco"), rsP.getInt("estoque"));
+                        }
+                    }
+                    itens.add(new ItemPedido(rsI.getInt("id_item"), produto, rsI.getInt("quantidade")));
+                }
+            }
+
+            lista.add(new Pedido(
+                idPedido,
+                cliente,
+                StatusPedido.valueOf(rs.getString("statusPedido")),
+                rs.getTimestamp("dataCriacao").toLocalDateTime(),
+                itens
+            ));
+        }
+    }
+
+    return lista;
+}
 
     public void relatorioTotalPorCliente() throws SQLException {
         String sqlPedidos = "SELECT id_pedido, id_cliente FROM pedidos";
