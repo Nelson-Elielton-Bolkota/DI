@@ -26,6 +26,7 @@ public class MenuProduto {
             System.out.println("2. Listar todos os produtos");
             System.out.println("3. Listar por nome");
             System.out.println("4. Listar por Categoria");
+            System.out.println("5. Deletar produto");
             System.out.println("0. Voltar");
             System.out.print("Opção: ");
 
@@ -36,6 +37,7 @@ public class MenuProduto {
                 case 2 -> buscarTodos();
                 case 3 -> buscarPorNome();
                 case 4-> buscarPorCategoria();
+                case 5-> deletarProduto();
                 case 0 -> System.out.println("Voltando...");
                 default -> System.out.println("Opção inválida.");
             }
@@ -120,6 +122,29 @@ public class MenuProduto {
             produtos.forEach(System.out::println);
         }catch(SQLException e){
             System.out.println("ERRO: falha ao listar produtos");
+        }
+    }
+
+    public void deletarProduto(){
+        System.out.println("Digite o ID do produto a ser deletado:");
+        int id = lerInt();
+        if (id < 0) {
+            System.out.println("Produto não encontrado");
+            return;
+        }
+        try{
+            boolean sucesso = produtoDAO.deletar(id);
+
+            if (sucesso) {
+                System.out.println("Produto deletado com sucesso");
+                return;
+            }else{
+                System.out.println("Falha ao deletar produto");
+                return;
+            }
+
+        }catch(SQLException e){
+            System.out.println("Falha ao deletar produto");
         }
     }
 
