@@ -7,6 +7,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.print.DocFlavor.STRING;
+
 public class ProdutoDAO {
     public void salvar(Produto produto) throws SQLException {
         String sql = "insert into produtos(nome, preco, estoque, categoria) values (?,?,?,?)";
@@ -93,7 +95,28 @@ public class ProdutoDAO {
         }
         return lista;
     }
-    public List<Produto> buscarPorCategoria(String nome) throws SQLException{
-        
+    public List<Produto> buscarPorCategoria(CategoriaProduto categoria) throws SQLException{
+        String sql = "select id_produto, nome, preco, estoque, categoria from produtos where categoria = ? order by nome";
+        List<Produto> lista = new ArrayList<>();
+
+        try(Connection conn = Conexao.conectar();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+
+                ps.setString(1, categoria.name());
+
+                try(ResultSet rs = ps.executeQuery()){
+
+                    while (rs.next()) {
+                        lista.add(new Produto(
+                          rs.getInt("id_produto"),
+                        rs.getString("nome"),
+                        rs.getDouble("preco"),
+                        rs.getInt("estoque"),
+                        CategoriaProduto.valueOf(rs.getString("categoria"))));  
+                        
+                    }
+                }
+            }
+            return lista;
     }
 }
