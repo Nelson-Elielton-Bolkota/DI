@@ -140,7 +140,19 @@ public class MenuPedido {
                 return;
             }
 
-        
+            // Salva o pedido com a transação
 
-}
+            try{
+                List<Pedido> pedidos = pedidoDAO.buscarTodos();
+                if(pedidos.isEmpty()){
+                    System.out.println("Nenhum pedido encontrado!!");
+                    return;
+                }
+                System.out.println(" === PEDIDOS === ");
+                pedidos.forEach(System.out::println);
+            } 
+            catch(SQLException e){
+                System.out.println("Erro ao listar pedidos!! " + e.getMessage());
+            }
+    }
 }
