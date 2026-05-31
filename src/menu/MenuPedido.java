@@ -70,7 +70,7 @@ public class MenuPedido {
                 int idCliente = lerInt();
 
                 Cliente clienteSelecionado = clientes.stream()
-                        .filter(c -> getId() == idCliente)
+                        .filter(c -> c.getId() == idCliente)
                         .findFirst()
                         .orElse(null);
 
@@ -113,7 +113,7 @@ public class MenuPedido {
             }
 
                 Produto produtoSelecionado = produtos.stream()
-                    .filter(p -> p.getId() == idProduto)
+                    .filter(p -> p.getId_produto() == idProduto)
                     .findFirst()
                     .orElse(null);
 

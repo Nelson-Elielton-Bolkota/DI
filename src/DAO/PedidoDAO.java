@@ -21,15 +21,15 @@ public class PedidoDAO {
         for (ItemPedido item : pedido.getItens()) {
             String sqlEstoque = "SELECT estoque FROM produtos WHERE id_produto = ?";
             try (PreparedStatement ps = conn.prepareStatement(sqlEstoque)) {
-                ps.setInt(1, item.getProduto().getId());
+                ps.setInt(1, item.getProduto().getId_produto());
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     int estoqueAtual = rs.getInt("estoque");
                     if (item.getQuantidade() > estoqueAtual) {
                         throw new EstoqueInsuficienteException(
-                            "Estoque insuficiente para: " + item.getProduto().getNome()
-                            + " | Disponível: " + estoqueAtual
-                            + " | Solicitado: " + item.getQuantidade()
+                            item.getProduto().getNome(),
+                            item.getQuantidade(),
+                               estoqueAtual
                         );
                     }
                 }
@@ -55,14 +55,14 @@ public class PedidoDAO {
         for (ItemPedido item : pedido.getItens()) {
             try (PreparedStatement ps = conn.prepareStatement(sqlItem)) {
                 ps.setInt(1, idPedidoGerado);
-                ps.setInt(2, item.getProduto().getId());
+                ps.setInt(2, item.getProduto().getId_produto());
                 ps.setInt(3, item.getQuantidade());
                 ps.setDouble(4, item.getProduto().getPreco());
                 ps.executeUpdate();
             }
             try (PreparedStatement ps = conn.prepareStatement(sqlDesconto)) {
                 ps.setInt(1, item.getQuantidade());
-                ps.setInt(2, item.getProduto().getId());
+                ps.setInt(2, item.getProduto().getId_produto());
                 ps.executeUpdate();
             }
         }
@@ -114,7 +114,14 @@ public class PedidoDAO {
                         psP.setInt(1, idProduto);
                         ResultSet rsP = psP.executeQuery();
                         if (rsP.next()) {
-                            produto = new Produto(rsP.getInt("id_produto"), rsP.getString("nome"), rsP.getDouble("preco"), rsP.getInt("estoque"));
+                            produto = new Produto(
+                                rsP.getInt("id_produto"), 
+                                rsP.getString("nome"), rsP.getDouble
+                                ("preco"), rsP.getInt
+                                ("estoque"),
+                                CategoriaProduto.valueOf(rsP.getString("categoria"))
+                            );
+                                
                         }
                     }
                     itens.add(new ItemPedido(rsI.getInt("id_item"), produto, rsI.getInt("quantidade")));
