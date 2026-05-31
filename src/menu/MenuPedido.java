@@ -27,7 +27,7 @@ public class MenuPedido {
     public void exibir(){
         int opcao = -1;
             while(opcao != 0){
-                System.out.println("=== MENU PEDIDOS ===");
+                System.out.println(" === MENU PEDIDOS === ");
                 System.out.println("1. Criar Pedido");
                 System.out.println("2. Listar Pedidos");
                 System.out.println("3. Relatório: total por cliente");
