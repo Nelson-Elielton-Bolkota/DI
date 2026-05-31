@@ -145,7 +145,7 @@ public class MenuPedido {
             try{
                 pedidoDAO.salvar(pedido);
                 System.out.println("Pedido criado com sucesso! Status: FILA(Será processado em breve)");
-            } catch(EstoqueInsuficienteException e){
+            } catch(EstoqueInsuficienteException e) {
                 System.out.println("Pedido não criado!! " + e.getMessage());
             } catch(SQLException e){
                 System.out.println("Erro ao salvar o pedido!!" + e.getMessage());
@@ -166,4 +166,28 @@ public class MenuPedido {
             }
         }
         
+    
+        private void relatorioClientes(){
+            try{
+                pedidoDAO.relatorioTotalPorCliente();
+            } catch(SQLException e){
+                System.out.println("Erro ao gerar relatório:" + e.getMessage());
+            }
+        }
+
+        private void relatorioProdutos() {
+        try {
+            pedidoDAO.relatorioProdutosMaisVendidos();
+        } catch (SQLException e) {
+            System.out.println("Erro ao gerar relatório: " + e.getMessage());
+        }
+    }
+
+    private int lerInt() {
+        try {
+            return Integer.parseInt(scanner.nextLine().trim());
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
 }
