@@ -105,7 +105,29 @@ public class MenuPedido {
                 produtos.forEach(System.out::println);
                 System.out.print("ID do produto(0 para finalizar): ");
                 int idProduto = lerInt();
+
+                
+            if(idProduto == 0){
+                adicionado = false;
+                continue;
             }
+
+                Produto produtoSelecionado = produtos.stream()
+                    .filter(p -> p.getId() == idProduto)
+                    .findFirst()
+                    .orElse(null);
+
             
+                    if(produtoSelecionado == null){
+                        System.out.println("Produto não encontrado!!");
+                        continue;
+                    }
+
+                
+            
+            }
+
+        
+
 }
 }
