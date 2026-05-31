@@ -97,6 +97,15 @@ public class MenuPedido {
                 System.out.println("Nenhum produto cadastrado!!");
                 return;
             }
+
+            boolean adicionado = true;
+
+            while(adicionado){
+                System.out.println("Produtos Disponíveis: ");
+                produtos.forEach(System.out::println);
+                System.out.print("ID do produto(0 para finalizar): ");
+                int idProduto = lerInt();
+            }
             
 }
 }
