@@ -119,4 +119,17 @@ public class ProdutoDAO {
             }
             return lista;
     }
+    public boolean deletar(int id) throws SQLException {
+        String sql = "delete from produtos where id_produto = ?";
+
+        try (Connection conn = Conexao.conectar();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            int linhasAfetadas = ps.executeUpdate(); 
+            
+            return linhasAfetadas > 0;
+        }
+        
+    }
 }
