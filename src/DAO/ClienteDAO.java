@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ClienteDAO {
     public void salvar(Cliente cliente) throws SQLException {
-        String sql = "insert into clientes(nome, email) values (?, ?) ";
+        String sql = "insert into cliente(nome, email) values (?, ?) ";
         
         try (Connection conn = Conexao.conectar();
             PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -20,7 +20,7 @@ public class ClienteDAO {
     }
 
 public List<Cliente> buscarTodos() throws SQLException {
-    String sql = "select id, nome, email from clientes order by nome";
+    String sql = "select id, nome, email from cliente order by nome";
     List<Cliente> lista = new ArrayList<>();
 
     try(Connection conn = Conexao.conectar();

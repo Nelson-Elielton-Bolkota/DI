@@ -29,7 +29,7 @@ public class PedidoDAO {
                         throw new EstoqueInsuficienteException(
                             item.getProduto().getNome(),
                             item.getQuantidade(),
-                               estoqueAtual
+                            estoqueAtual
                         );
                     }
                 }
@@ -91,12 +91,12 @@ public class PedidoDAO {
 
             // Busca cliente
             Cliente cliente = null;
-            String sqlCliente = "SELECT id_cliente, nome, email FROM clientes WHERE id_cliente = ?";
+            String sqlCliente = "SELECT id, nome, email FROM cliente WHERE id = ?";
             try (PreparedStatement psC = conn.prepareStatement(sqlCliente)) {
                 psC.setInt(1, idCliente);
                 ResultSet rsC = psC.executeQuery();
                 if (rsC.next()) {
-                    cliente = new Cliente(rsC.getInt("id_cliente"), rsC.getString("nome"), rsC.getString("email"));
+                    cliente = new Cliente(rsC.getInt("id"), rsC.getString("nome"), rsC.getString("email"));
                 }
             }
 
@@ -109,19 +109,18 @@ public class PedidoDAO {
                 while (rsI.next()) {
                     int idProduto = rsI.getInt("id_produto");
                     Produto produto = null;
-                    String sqlProduto = "SELECT id_produto, nome, preco, estoque FROM produtos WHERE id_produto = ?";
+                    String sqlProduto = "SELECT id_produto, nome, preco, estoque, categoria FROM produtos WHERE id_produto = ?";
                     try (PreparedStatement psP = conn.prepareStatement(sqlProduto)) {
                         psP.setInt(1, idProduto);
                         ResultSet rsP = psP.executeQuery();
                         if (rsP.next()) {
                             produto = new Produto(
-                                rsP.getInt("id_produto"), 
-                                rsP.getString("nome"), rsP.getDouble
-                                ("preco"), rsP.getInt
-                                ("estoque"),
+                                rsP.getInt("id_produto"),
+                                rsP.getString("nome"),
+                                rsP.getDouble("preco"),
+                                rsP.getInt("estoque"),
                                 CategoriaProduto.valueOf(rsP.getString("categoria"))
                             );
-                                
                         }
                     }
                     itens.add(new ItemPedido(rsI.getInt("id_item"), produto, rsI.getInt("quantidade")));
@@ -174,7 +173,7 @@ public class PedidoDAO {
             }
 
             for (java.util.Map.Entry<Integer, double[]> entry : totaisPorCliente.entrySet()) {
-                String sqlCliente = "SELECT nome FROM clientes WHERE id_cliente = ?";
+                String sqlCliente = "SELECT nome FROM cliente WHERE id = ?";
                 try (PreparedStatement psCliente = conn.prepareStatement(sqlCliente)) {
                     psCliente.setInt(1, entry.getKey());
                     ResultSet rsCliente = psCliente.executeQuery();
