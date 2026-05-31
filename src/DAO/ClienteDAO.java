@@ -60,5 +60,6 @@ public Cliente buscarPorId(int id) throws SQLException {
             }
         }
         }
+        return null;    
 }
 }
