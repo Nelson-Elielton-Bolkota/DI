@@ -1,6 +1,7 @@
 package menu;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -24,6 +25,7 @@ public class MenuProduto {
             System.out.println("1. Cadastrar produto");
             System.out.println("2. Listar todos os produtos");
             System.out.println("3. Listar por nome");
+            System.out.println("4. Listar por Categoria");
             System.out.println("0. Voltar");
             System.out.print("Opção: ");
 
@@ -33,6 +35,7 @@ public class MenuProduto {
                 case 1 -> salvar();
                 case 2 -> buscarTodos();
                 case 3 -> buscarPorNome();
+                case 4-> buscarPorCategoria();
                 case 0 -> System.out.println("Voltando...");
                 default -> System.out.println("Opção inválida.");
             }
@@ -96,7 +99,27 @@ public class MenuProduto {
         System.out.println("PRODUTOS");
         produtos.forEach(System.out::println);
         } catch(SQLException e){
-            System.out.println("ERRO: falha ao listar produtos " + e.getMessage());
+            System.out.println("ERRO: falha ao listar produtos ");
+        }
+    }
+
+    public void buscarPorCategoria(){
+        CategoriaProduto categoria = lerCategoria();
+
+        if (categoria == null) {
+            return;
+        }
+        try{
+            List<Produto> produtos = produtoDAO.buscarPorCategoria(categoria);
+
+            if (produtos.isEmpty()) {
+                System.out.println("nenhum produuto foi encontrado");
+                return;
+            }
+            System.out.println("PRODUTOS");
+            produtos.forEach(System.out::println);
+        }catch(SQLException e){
+            System.out.println("ERRO: falha ao listar produtos");
         }
     }
 
