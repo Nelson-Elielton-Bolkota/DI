@@ -37,4 +37,14 @@ public List<Cliente> buscarTodos() throws SQLException {
          }
          return lista;
 }
+
+public Cliente buscarPorId(int id_cliente) throws SQLException {
+    String sql = "SELECT id, nome, email from clientes where id = ?";
+    
+
+    try(Connection conn = Conexao.conectar();
+        PreparedStatement ps = conn.prepareStatement(sql) {
+            
+        })
+}
 }
