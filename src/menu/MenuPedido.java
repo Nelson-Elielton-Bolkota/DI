@@ -123,6 +123,14 @@ public class MenuPedido {
                         continue;
                     }
 
+                System.out.println("Quantidade: ");
+                int quantidade = lerInt();
+
+                if(quantidade <= 0){
+                    System.out.println("Quantidade inválida!!");
+                    continue;
+                }
+
                 
             
             }
