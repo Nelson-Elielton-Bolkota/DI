@@ -26,7 +26,8 @@ public class MenuProduto {
             System.out.println("2. Listar todos os produtos");
             System.out.println("3. Listar por nome");
             System.out.println("4. Listar por Categoria");
-            System.out.println("5. Deletar produto");
+            System.out.println("5. Buscar por ID");
+            System.out.println("6. Deletar produto");
             System.out.println("0. Voltar");
             System.out.print("Opção: ");
 
@@ -37,12 +38,15 @@ public class MenuProduto {
                 case 2 -> buscarTodos();
                 case 3 -> buscarPorNome();
                 case 4-> buscarPorCategoria();
-                case 5-> deletarProduto();
+                case 5 -> buscarPorID();
+                case 6-> deletarProduto();
                 case 0 -> System.out.println("Voltando...");
                 default -> System.out.println("Opção inválida.");
             }
         }
     }
+
+    
 
     private void salvar() {
         System.out.println("Nome:");
@@ -105,7 +109,7 @@ public class MenuProduto {
         }
     }
 
-    public void buscarPorCategoria(){
+    private void buscarPorCategoria(){
         CategoriaProduto categoria = lerCategoria();
 
         if (categoria == null) {
@@ -125,7 +129,28 @@ public class MenuProduto {
         }
     }
 
-    public void deletarProduto(){
+    private void buscarPorID() {
+        System.out.println("Digite o ID do produto que deseja:");
+        int id = lerInt();
+        if(id <= 0){
+            System.out.println("Produto não encontrado");
+            return;
+        }
+        try {
+            Produto produto = produtoDAO.buscarPorId(id);
+            
+            if (produto == null) {
+                System.out.println("nenhum produto encontrado para o id "+ id);
+            }else{
+                System.out.println(produto);
+            }
+        }catch(SQLException e){
+            System.out.println("ERRO: falha ao buscar produto por ID");
+        }
+
+    }
+
+    private void deletarProduto(){
         System.out.println("Digite o ID do produto a ser deletado:");
         int id = lerInt();
         if (id < 0) {
