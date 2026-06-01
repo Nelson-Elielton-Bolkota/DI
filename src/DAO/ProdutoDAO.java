@@ -7,7 +7,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.print.DocFlavor.STRING;
 
 public class ProdutoDAO {
     public void salvar(Produto produto) throws SQLException {

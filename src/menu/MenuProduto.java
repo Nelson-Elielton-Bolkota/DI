@@ -258,7 +258,7 @@ public class MenuProduto {
 
     // metodos q eu fiz pra ajudar aqui
     private CategoriaProduto lerCategoria() {
-        System.out.println("Categoria:");
+        System.out.println("Categoria:");       
         CategoriaProduto[] categorias = CategoriaProduto.values();
 
         for (int i = 0; i < categorias.length; i++) {
