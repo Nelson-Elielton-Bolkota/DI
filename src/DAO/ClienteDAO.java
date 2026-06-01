@@ -2,8 +2,6 @@ package DAO;
 
 import infra.*;
 import model.Cliente;
-import model.Produto;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
