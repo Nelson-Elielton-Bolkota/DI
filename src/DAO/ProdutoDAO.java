@@ -76,8 +76,7 @@ public class ProdutoDAO {
         List<Produto> lista = new ArrayList<>();
 
         try (Connection conn = Conexao.conectar();
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ) {
+                PreparedStatement ps = conn.prepareStatement(sql);) {
 
             ps.setString(1, "%" + nome + "%");
 
@@ -95,57 +94,82 @@ public class ProdutoDAO {
         }
         return lista;
     }
-    public List<Produto> buscarPorCategoria(CategoriaProduto categoria) throws SQLException{
+
+    public List<Produto> buscarPorCategoria(CategoriaProduto categoria) throws SQLException {
         String sql = "select id_produto, nome, preco, estoque, categoria from produtos where categoria = ? order by nome";
         List<Produto> lista = new ArrayList<>();
 
-        try(Connection conn = Conexao.conectar();
-            PreparedStatement ps = conn.prepareStatement(sql)){
+        try (Connection conn = Conexao.conectar();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
-                ps.setString(1, categoria.name());
+            ps.setString(1, categoria.name());
 
-                try(ResultSet rs = ps.executeQuery()){
+            try (ResultSet rs = ps.executeQuery()) {
 
-                    while (rs.next()) {
-                        lista.add(new Produto(
-                          rs.getInt("id_produto"),
-                        rs.getString("nome"),
-                        rs.getDouble("preco"),
-                        rs.getInt("estoque"),
-                        CategoriaProduto.valueOf(rs.getString("categoria"))));  
-                        
-                    }
+                while (rs.next()) {
+                    lista.add(new Produto(
+                            rs.getInt("id_produto"),
+                            rs.getString("nome"),
+                            rs.getDouble("preco"),
+                            rs.getInt("estoque"),
+                            CategoriaProduto.valueOf(rs.getString("categoria"))));
+
+                }
+            }
+        }
+        return lista;
+    }
+
+    public boolean atualizarPreco(int id, double novoPreco) throws SQLException {
+        String sql = "update produtos set preco = ? where id_produto = ?";
+
+        try (Connection conn = Conexao.conectar();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setDouble(1, novoPreco);
+            ps.setInt(2, id);
+            int linhasAfetadas = ps.executeUpdate();
+
+            return linhasAfetadas > 0;
+        }
+    }
+
+    public boolean atualizarEstoque(int id, int estoque) throws SQLException {
+        String sql = "update produtos set estoque = ? where id_produto = ?";
+
+        try (Connection conn = Conexao.conectar();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setDouble(1, estoque);
+            ps.setInt(2, id);
+            int linhasAfetadas = ps.executeUpdate();
+
+            return linhasAfetadas > 0;
+        }
+    }
+
+    public List<Produto> EstoqueBaixo(int estoque) throws SQLException {
+        String sql = "select id_produto, nome, preco, estoque, categoria from produtos where estoque <= ? order by estoque asc";
+        List<Produto> lista = new ArrayList<>();
+
+        try (Connection conn = Conexao.conectar();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, estoque);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(new Produto(
+                            rs.getInt("id_produto"),
+                            rs.getString("nome"),
+                            rs.getDouble("preco"),
+                            rs.getInt("estoque"),
+                            CategoriaProduto.valueOf(rs.getString("categoria"))));
+
                 }
             }
             return lista;
-    }
-    
-    public boolean atualizarPreco(int id, double novoPreco) throws SQLException{
-        String sql = "update produtos set preco = ? where id_produto = ?";
-
-        try(Connection conn = Conexao.conectar();
-            PreparedStatement ps = conn.prepareStatement(sql)){
-
-                ps.setDouble(1, novoPreco);
-                ps.setInt(2, id);
-                int linhasAfetadas = ps.executeUpdate();
-
-                return linhasAfetadas>0;
-            }
-    }
-
-    public boolean atualizarEstoque(int id, int estoque) throws SQLException{
-        String sql = "update produtos set estoque = ? where id_produto = ?";
-
-        try(Connection conn = Conexao.conectar();
-            PreparedStatement ps = conn.prepareStatement(sql)){
-
-                ps.setDouble(1, estoque);
-                ps.setInt(2, id);
-                int linhasAfetadas = ps.executeUpdate();
-
-                return linhasAfetadas>0;
-            }
+        }
     }
 
     public boolean deletar(int id) throws SQLException {
@@ -155,10 +179,10 @@ public class ProdutoDAO {
                 PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
-            int linhasAfetadas = ps.executeUpdate(); 
-            
+            int linhasAfetadas = ps.executeUpdate();
+
             return linhasAfetadas > 0;
         }
-        
+
     }
 }
