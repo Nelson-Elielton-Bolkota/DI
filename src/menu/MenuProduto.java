@@ -28,7 +28,8 @@ public class MenuProduto {
             System.out.println("5. Buscar por ID");
             System.out.println("6. Atualizar preço do produto");
             System.out.println("7. Atualizar estoque do produto");
-            System.out.println("8. Deletar produto");
+            System.out.println("8. Relatorio: Produtos com estoque baixo");
+            System.out.println("9. Deletar produto");
             System.out.println("0. Voltar");
             System.out.print("Opção: ");
 
@@ -42,7 +43,8 @@ public class MenuProduto {
                 case 5 -> buscarPorID();
                 case 6 -> atualizarPreco();
                 case 7 -> atualizarEstoque();
-                case 8 -> deletarProduto();
+                case 8-> EstoqueBaixo();
+                case 9 -> deletarProduto();
                 case 0 -> System.out.println("Voltando...");
                 default -> System.out.println("Opção inválida.");
             }
@@ -207,6 +209,27 @@ public class MenuProduto {
             }
         } catch (SQLException e) {
             System.out.println("ERRO: falha ao atualizar produto");
+        }
+    }
+
+    private void EstoqueBaixo() {
+
+        System.out.println("Deseja ver produtos com estoque menor que quanto? (ex: 10)");
+        int estoque = lerInt();
+        if (estoque<0) {
+            System.out.println("Estoque não pode ser negativo");
+            return;
+        }
+        try {
+            List<Produto> produtos = produtoDAO.EstoqueBaixo(estoque);
+            if (produtos.isEmpty()) {
+                System.out.println("nenhum produto foi encontrado");
+                return;
+            }
+            System.out.println("PRODUTOS");
+            produtos.forEach(System.out::println);
+        } catch (SQLException e) {
+            System.out.println("ERRO: falha ao listar produtos ");
         }
     }
 
