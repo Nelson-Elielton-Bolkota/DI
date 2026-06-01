@@ -119,6 +119,21 @@ public class ProdutoDAO {
             }
             return lista;
     }
+    
+    public boolean atualizarPreco(int id, double novoPreco) throws SQLException{
+        String sql = "update produtos set preco = ? where id_produto = ?";
+
+        try(Connection conn = Conexao.conectar();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+
+                ps.setDouble(1, novoPreco);
+                ps.setInt(2, id);
+                int linhasAfetadas = ps.executeUpdate();
+
+                return linhasAfetadas>0;
+            }
+    }
+
     public boolean deletar(int id) throws SQLException {
         String sql = "delete from produtos where id_produto = ?";
 
