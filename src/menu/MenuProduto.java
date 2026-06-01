@@ -1,7 +1,6 @@
 package menu;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -39,18 +38,16 @@ public class MenuProduto {
                 case 1 -> salvar();
                 case 2 -> buscarTodos();
                 case 3 -> buscarPorNome();
-                case 4-> buscarPorCategoria();
+                case 4 -> buscarPorCategoria();
                 case 5 -> buscarPorID();
                 case 6 -> atualizarPreco();
-                case 7-> atualizarEstoque();
-                case 8-> deletarProduto();
+                case 7 -> atualizarEstoque();
+                case 8 -> deletarProduto();
                 case 0 -> System.out.println("Voltando...");
                 default -> System.out.println("Opção inválida.");
             }
         }
     }
-
-    
 
     private void salvar() {
         System.out.println("Nome:");
@@ -100,26 +97,26 @@ public class MenuProduto {
     private void buscarPorNome() {
         System.out.println("Digite o nome do produto:");
         String nome = MenuPrincipal.removerAcentos(scanner.nextLine().trim());
-        try{
-            List<Produto>produtos =  produtoDAO.buscarPorNome(nome);
-        if (produtos.isEmpty()) {
-            System.out.println("nenhum produto foi encontrado");
-            return;
-        }
-        System.out.println("PRODUTOS");
-        produtos.forEach(System.out::println);
-        } catch(SQLException e){
+        try {
+            List<Produto> produtos = produtoDAO.buscarPorNome(nome);
+            if (produtos.isEmpty()) {
+                System.out.println("nenhum produto foi encontrado");
+                return;
+            }
+            System.out.println("PRODUTOS");
+            produtos.forEach(System.out::println);
+        } catch (SQLException e) {
             System.out.println("ERRO: falha ao listar produtos ");
         }
     }
 
-    private void buscarPorCategoria(){
+    private void buscarPorCategoria() {
         CategoriaProduto categoria = lerCategoria();
 
         if (categoria == null) {
             return;
         }
-        try{
+        try {
             List<Produto> produtos = produtoDAO.buscarPorCategoria(categoria);
 
             if (produtos.isEmpty()) {
@@ -128,7 +125,7 @@ public class MenuProduto {
             }
             System.out.println("PRODUTOS");
             produtos.forEach(System.out::println);
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println("ERRO: falha ao listar produtos");
         }
     }
@@ -136,51 +133,76 @@ public class MenuProduto {
     private void buscarPorID() {
         System.out.println("Digite o ID do produto que deseja:");
         int id = lerInt();
-        if(id <= 0){
+        if (id <= 0) {
             System.out.println("Produto não encontrado");
             return;
         }
         try {
             Produto produto = produtoDAO.buscarPorId(id);
-            
+
             if (produto == null) {
-                System.out.println("nenhum produto encontrado para o id "+ id);
-            }else{
+                System.out.println("nenhum produto encontrado para o id " + id);
+            } else {
                 System.out.println(produto);
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println("ERRO: falha ao buscar produto por ID");
         }
 
     }
 
-    private void atualizarPreco(){
+    private void atualizarEstoque() {
 
     }
 
-    private void atualizarEstoque(){
-        
+    private void atualizarPreco() {
+        System.out.println("Digite o ID do produto");
+        int id = lerInt();
+        if (id <= 0) {
+            System.out.println("Erro: ID inválido");
+            return;
+        }
+        System.out.println("Digite o novo preço para o produto");
+        double preco = lerPreco();
+        if (preco < 0) {
+            System.out.println("Erro: O preço não pode ser negativo.");
+            return;
+        }
+        try {
+            boolean atualizou = produtoDAO.atualizarPreco(id, preco);
+            if (atualizou) {
+                System.out.println("Sucesso ao atualizar produto");
+                Produto produtoAtualizado = produtoDAO.buscarPorId(id);
+
+                System.out.println("Produto atualizado: ");
+                System.out.println(produtoAtualizado);
+            } else {
+                System.out.println("Nenhum produto encontrado para o id " + id);
+            }
+        } catch (SQLException e) {
+            System.out.println("ERRO: falha ao atualizar produto");
+        }
     }
 
-    private void deletarProduto(){
+    private void deletarProduto() {
         System.out.println("Digite o ID do produto a ser deletado:");
         int id = lerInt();
         if (id < 0) {
             System.out.println("Produto não encontrado");
             return;
         }
-        try{
+        try {
             boolean sucesso = produtoDAO.deletar(id);
 
             if (sucesso) {
                 System.out.println("Produto deletado com sucesso");
                 return;
-            }else{
+            } else {
                 System.out.println("Falha ao deletar produto");
                 return;
             }
 
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println("Falha ao deletar produto");
         }
     }
