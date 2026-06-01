@@ -151,9 +151,6 @@ public class MenuProduto {
 
     }
 
-    private void atualizarEstoque() {
-
-    }
 
     private void atualizarPreco() {
         System.out.println("Digite o ID do produto");
@@ -170,6 +167,35 @@ public class MenuProduto {
         }
         try {
             boolean atualizou = produtoDAO.atualizarPreco(id, preco);
+            if (atualizou) {
+                System.out.println("Sucesso ao atualizar produto");
+                Produto produtoAtualizado = produtoDAO.buscarPorId(id);
+
+                System.out.println("Produto atualizado: ");
+                System.out.println(produtoAtualizado);
+            } else {
+                System.out.println("Nenhum produto encontrado para o id " + id);
+            }
+        } catch (SQLException e) {
+            System.out.println("ERRO: falha ao atualizar produto");
+        }
+    }
+
+    private void atualizarEstoque() {
+        System.out.println("Digite o ID do produto");
+        int id = lerInt();
+        if (id <= 0) {
+            System.out.println("Erro: ID inválido");
+            return;
+        }
+        System.out.println("Digite o novo estoque para o produto");
+        int estoque = lerInt();
+        if (estoque < 0) {
+            System.out.println("Erro: O preço não pode ser negativo.");
+            return;
+        }
+        try {
+            boolean atualizou = produtoDAO.atualizarEstoque(id, estoque);
             if (atualizou) {
                 System.out.println("Sucesso ao atualizar produto");
                 Produto produtoAtualizado = produtoDAO.buscarPorId(id);
