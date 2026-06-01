@@ -1,5 +1,7 @@
 package menu;
 
+import DAO.ClienteDAO;
+import model.Cliente;
 import java.util.Scanner;
 
 public class MenuCliente {
