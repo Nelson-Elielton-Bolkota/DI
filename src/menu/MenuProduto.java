@@ -27,7 +27,9 @@ public class MenuProduto {
             System.out.println("3. Listar por nome");
             System.out.println("4. Listar por Categoria");
             System.out.println("5. Buscar por ID");
-            System.out.println("6. Deletar produto");
+            System.out.println("6. Atualizar preço do produto");
+            System.out.println("7. Atualizar estoque do produto");
+            System.out.println("8. Deletar produto");
             System.out.println("0. Voltar");
             System.out.print("Opção: ");
 
@@ -39,7 +41,9 @@ public class MenuProduto {
                 case 3 -> buscarPorNome();
                 case 4-> buscarPorCategoria();
                 case 5 -> buscarPorID();
-                case 6-> deletarProduto();
+                case 6 -> atualizarPreco();
+                case 7-> atualizarEstoque();
+                case 8-> deletarProduto();
                 case 0 -> System.out.println("Voltando...");
                 default -> System.out.println("Opção inválida.");
             }
@@ -148,6 +152,14 @@ public class MenuProduto {
             System.out.println("ERRO: falha ao buscar produto por ID");
         }
 
+    }
+
+    private void atualizarPreco(){
+
+    }
+
+    private void atualizarEstoque(){
+        
     }
 
     private void deletarProduto(){
