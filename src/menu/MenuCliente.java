@@ -85,4 +85,55 @@ public class MenuCliente {
             System.out.println("Erro ao buscar: " + e.getMessage());
         }
     }
+
+    private void atualizar() {
+        System.out.print("ID do cliente a atualizar: ");
+        int id = lerInteiro();
+
+        try {
+            Cliente existente = clienteDAO.buscarPorId(id);
+            if (existente == null) {
+                System.out.println("Cliente não encontrado.");
+                return;
+            }
+
+            System.out.println("Cliente atual: " + existente);
+            System.out.print("Novo nome: ");
+            String nome = scanner.nextLine();
+            System.out.print("Novo email: ");
+            String email = scanner.nextLine();
+ 
+            clienteDAO.atualizar(new Cliente(id, nome, email));
+            System.out.println("Cliente atualizado com sucesso!");
+            } 
+            catch (SQLException e) {
+            System.out.println("Erro ao atualizar: " + e.getMessage());
+        }
+    }
+
+    private void deletar() {
+        System.out.print("ID do cliente a deletar: ");
+        int id = lerInteiro();
+ 
+        try {
+            boolean removido = clienteDAO.deletar(id);
+            if (removido) {
+                System.out.println("Cliente deletado com sucesso!");
+            } else {
+                System.out.println("Cliente não encontrado.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao deletar: " + e.getMessage());
+        }
+    }
+    
+    private int lerInteiro() {
+        while (true) {
+            try {
+                return Integer.parseInt(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.print("Digite um número válido: ");
+            }
+        }
+    }
 }
