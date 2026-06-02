@@ -105,4 +105,9 @@ public class MenuCliente {
  
             clienteDAO.atualizar(new Cliente(id, nome, email));
             System.out.println("Cliente atualizado com sucesso!");
+            } 
+            catch (SQLException e) {
+            System.out.println("Erro ao atualizar: " + e.getMessage());
+        }
+    }
 }
