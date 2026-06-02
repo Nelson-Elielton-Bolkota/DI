@@ -111,6 +111,21 @@ public class MenuCliente {
         }
     }
 
+    private void deletar() {
+        System.out.print("ID do cliente a deletar: ");
+        int id = lerInteiro();
+ 
+        try {
+            boolean removido = clienteDAO.deletar(id);
+            if (removido) {
+                System.out.println("Cliente deletado com sucesso!");
+            } else {
+                System.out.println("Cliente não encontrado.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao deletar: " + e.getMessage());
+        }
+    }
     
     private int lerInteiro() {
         while (true) {
