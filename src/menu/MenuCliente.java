@@ -36,6 +36,11 @@ public class MenuCliente {
                 case 0 -> System.out.println("Voltando...");
                 default -> System.out.println("Opção Invalida");
             }
-        }
+        } while (opcao != 0);
+    }
+
+    private void cadastrar() {
+        System.out.println("Nome: ");
+        String nome = 
     }
 }
