@@ -55,5 +55,8 @@ public class MenuCliente {
         }
     }
 
+    private void buscar() {
+        System.out.print("ID do cliente: ");
+        int id = lerInteiro();
     
 }
