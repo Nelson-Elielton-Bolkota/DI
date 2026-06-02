@@ -64,6 +64,11 @@ public class MenuCliente {
             } else {
                 clientes.forEach(System.out::println);
             }
+        } catch (SQLException e) {
+            System.out.println("Erro ao listar: " + e.getMessage());
+        }
+    }
+
 
     private void buscar() {
         System.out.print("ID do cliente: ");
