@@ -43,7 +43,6 @@ public class MenuCliente {
         System.out.println("Nome: ");
         String nome = scanner.nextLine();
         System.out.println("Email= ");
-        String =Scanner.nextLine(); 
-
+        String email = scanner.nextLine();
     }
 }
