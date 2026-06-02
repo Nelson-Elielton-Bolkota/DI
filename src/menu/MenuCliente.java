@@ -41,6 +41,9 @@ public class MenuCliente {
 
     private void cadastrar() {
         System.out.println("Nome: ");
-        String nome = 
+        String nome = scanner.nextLine();
+        System.out.println("Email= ");
+        String =Scanner.nextLine(); 
+
     }
 }
