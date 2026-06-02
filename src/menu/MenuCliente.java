@@ -96,4 +96,13 @@ public class MenuCliente {
                 System.out.println("Cliente não encontrado.");
                 return;
             }
+
+            System.out.println("Cliente atual: " + existente);
+            System.out.print("Novo nome: ");
+            String nome = scanner.nextLine();
+            System.out.print("Novo email: ");
+            String email = scanner.nextLine();
+ 
+            clienteDAO.atualizar(new Cliente(id, nome, email));
+            System.out.println("Cliente atualizado com sucesso!");
 }
