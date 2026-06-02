@@ -85,4 +85,8 @@ public class MenuCliente {
             System.out.println("Erro ao buscar: " + e.getMessage());
         }
     }
+
+    private void atualizar() {
+        System.out.print("ID do cliente a atualizar: ");
+        int id = lerInteiro();
 }
