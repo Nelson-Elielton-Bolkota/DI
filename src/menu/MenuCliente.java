@@ -27,7 +27,13 @@ public class MenuCliente {
 
             opcao = lerInteiro();
 
-            
+            switch (opcao) {
+                case 1 -> cadastrar();
+                case 2 -> listar();
+                case 3 -> buscar();
+                case 4 -> atualizar();
+                case 5 -> deletar();
+            }
         }
     }
 }
