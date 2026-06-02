@@ -89,4 +89,11 @@ public class MenuCliente {
     private void atualizar() {
         System.out.print("ID do cliente a atualizar: ");
         int id = lerInteiro();
+
+        try {
+            Cliente existente = clienteDAO.buscarPorId(id);
+            if (existente == null) {
+                System.out.println("Cliente não encontrado.");
+                return;
+            }
 }
