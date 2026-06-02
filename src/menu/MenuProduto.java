@@ -265,7 +265,7 @@ public class MenuProduto {
             System.out.println((i + 1) + ". " + categorias[i]);
         }
         System.out.println("Opção:");
-        int opcao = lerInteiro();
+        int opcao = lerInt();
 
         if (opcao < 1 || opcao > categorias.length) {
             System.out.println("Categoria inválida");
@@ -284,23 +284,7 @@ public class MenuProduto {
         }
     }
 
-    private void deletar() {
-        System.out.print("ID do cliente a deletar: ");
-        int id = lerInteiro();
- 
-        try {
-            boolean removido = clienteDAO.deletar(id);
-            if (removido) {
-                System.out.println("Cliente deletado com sucesso!");
-            } else {
-                System.out.println("Cliente não encontrado.");
-            }
-        } catch (SQLException e) {
-            System.out.println("Erro ao deletar: " + e.getMessage());
-        }
-    }
-
-    private int lerInteiro() {
+    private int lerInt() {
         try {
             return Integer.parseInt(scanner.nextLine().trim());
         } catch (NumberFormatException e) {
