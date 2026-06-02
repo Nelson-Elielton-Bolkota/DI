@@ -37,4 +37,41 @@ public List<Cliente> buscarTodos() throws SQLException {
          }
          return lista;
 }
+
+public Cliente buscarPorId(int id) throws SQLException {
+
+    String sql = "SELECT id_cliente, nome, email from cliente where id = ?";
+    
+
+    try(Connection conn = Conexao.conectar();
+        PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+        ps.setInt(1, id);
+
+        try(ResultSet rs = ps.executeQuery()) {
+            if(rs.next()) {
+                return new Cliente(
+                    rs.getInt("id_cliente"),
+                    rs.getString("nome"),
+                    rs.getString("email")
+                );
+            }
+        }
+        }
+        return null;    
+}
+
+public boolean deletar(int id) throws SQLException {
+        String sql = "delete from cliente where id_produto = ?";
+
+        try (Connection conn = Conexao.conectar();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            int linhasAfetadas = ps.executeUpdate();
+
+            return linhasAfetadas > 0;
+        }
+
+    }
 }

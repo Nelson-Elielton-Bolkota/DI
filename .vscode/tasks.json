@@ -1,0 +1,27 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Compilar e Rodar Java",
+      "type": "shell",
+      "command": "start cmd /k \"javac -d bin -cp bin;lib/mysql-connector-j-9.6.0.jar src\\*.java && java -cp bin;lib/mysql-connector-j-9.6.0.jar ${input:mainClass}\"",
+      "options": {
+        "shell": {
+          "executable": "cmd.exe",
+          "args": ["/c"]
+        }
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "mainClass",
+      "type": "promptString",
+      "description": "Nome da classe principal (ex: Main)"
+    }
+  ]
+}
