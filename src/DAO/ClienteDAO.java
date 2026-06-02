@@ -74,4 +74,9 @@ public boolean deletar(int id) throws SQLException {
         }
 
     }
+
+public void atualizar(Cliente cliente) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'atualizar'");
+}
 }
