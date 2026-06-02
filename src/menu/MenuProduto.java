@@ -25,7 +25,7 @@ public class MenuProduto {
             System.out.println("2. Listar todos os produtos");
             System.out.println("3. Listar por nome");
             System.out.println("4. Listar por Categoria");
-            System.out.println("5. Buscar por ID");
+            System.out.println("5.Listar por ID");
             System.out.println("6. Atualizar preço do produto");
             System.out.println("7. Atualizar estoque do produto");
             System.out.println("8. Relatorio: Produtos com estoque baixo");
