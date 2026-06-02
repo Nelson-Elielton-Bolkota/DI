@@ -4,6 +4,7 @@ import DAO.ClienteDAO;
 import model.Cliente;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 public class MenuCliente {
@@ -55,5 +56,33 @@ public class MenuCliente {
         }
     }
 
+    private void listar() {
+        try {
+            List<Cliente> clientes = clienteDAO.buscarTodos();
+            if (clientes.isEmpty()) {
+                System.out.println("Nenhum cliente cadastrado.");
+            } else {
+                clientes.forEach(System.out::println);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao listar: " + e.getMessage());
+        }
+    }
+
+
+    private void buscar() {
+        System.out.print("ID do cliente: ");
+        int id = lerInteiro();
     
+        try {
+            Cliente cliente = clienteDAO.buscarPorId(id);
+            if (cliente != null) {
+                System.out.println(cliente);
+            } else {
+                System.out.println("Cliente não encontrado.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar: " + e.getMessage());
+        }
+    }
 }
