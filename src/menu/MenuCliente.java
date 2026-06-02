@@ -2,6 +2,8 @@ package menu;
 
 import DAO.ClienteDAO;
 import model.Cliente;
+
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class MenuCliente {
@@ -43,7 +45,15 @@ public class MenuCliente {
         System.out.println("Nome: ");
         String nome = scanner.nextLine();
         System.out.println("Email= ");
-        String =Scanner.nextLine(); 
-
+        String email = scanner.nextLine();
+    
+    try {
+            clienteDAO.salvar(new Cliente(nome, email));
+            System.out.println("Cliente cadastrado com sucesso!");
+        } catch (SQLException e) {
+            System.out.println("Erro ao cadastrar: " + e.getMessage());
+        }
     }
+
+    
 }
