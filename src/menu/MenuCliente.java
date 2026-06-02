@@ -59,4 +59,15 @@ public class MenuCliente {
         System.out.print("ID do cliente: ");
         int id = lerInteiro();
     
+        try {
+            Cliente cliente = ClienteDAO.buscarPorId(id);
+            if (cliente != null) {
+                System.out.println(cliente);
+            } else {
+                System.out.println("Cliente não encontrado.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar: " + e.getMessage());
+        }
+    }
 }
