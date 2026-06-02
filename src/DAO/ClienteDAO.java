@@ -31,7 +31,7 @@ public List<Cliente> buscarTodos() throws SQLException {
                 lista.add(new Cliente(
                     rs.getInt("id_cliente"),
                     rs.getString("nome"),
-                    rs.getString("Email")
+                    rs.getString("email")
                 ));
             }
          }
@@ -40,7 +40,7 @@ public List<Cliente> buscarTodos() throws SQLException {
 
 public Cliente buscarPorId(int id_cliente) throws SQLException {
 
-    String sql = "SELECT id_cliente, nome, email from cliente where id = ?";
+    String sql = "SELECT id_cliente, nome, email from cliente where id_cliente = ?";
     
 
     try(Connection conn = Conexao.conectar();
@@ -62,7 +62,7 @@ public Cliente buscarPorId(int id_cliente) throws SQLException {
 }
 
 public boolean deletar(int id_cliente) throws SQLException {
-        String sql = "delete from cliente where id_produto = ?";
+        String sql = "delete from cliente where id_cliente = ?";
 
         try (Connection conn = Conexao.conectar();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
