@@ -38,7 +38,7 @@ public List<Cliente> buscarTodos() throws SQLException {
          return lista;
 }
 
-public Cliente buscarPorId(int id) throws SQLException {
+public Cliente buscarPorId(int id_cliente) throws SQLException {
 
     String sql = "SELECT id_cliente, nome, email from cliente where id = ?";
     
@@ -46,7 +46,7 @@ public Cliente buscarPorId(int id) throws SQLException {
     try(Connection conn = Conexao.conectar();
         PreparedStatement ps = conn.prepareStatement(sql)) {
             
-        ps.setInt(1, id);
+        ps.setInt(1, id_cliente);
 
         try(ResultSet rs = ps.executeQuery()) {
             if(rs.next()) {
@@ -61,22 +61,17 @@ public Cliente buscarPorId(int id) throws SQLException {
         return null;    
 }
 
-public boolean deletar(int id) throws SQLException {
+public boolean deletar(int id_cliente) throws SQLException {
         String sql = "delete from cliente where id_produto = ?";
 
         try (Connection conn = Conexao.conectar();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setInt(1, id);
+            ps.setInt(1, id_cliente);
             int linhasAfetadas = ps.executeUpdate();
 
             return linhasAfetadas > 0;
         }
 
     }
-
-public void atualizar(Cliente cliente) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'atualizar'");
-}
 }

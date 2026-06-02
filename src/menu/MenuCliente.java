@@ -74,7 +74,7 @@ public class MenuCliente {
         int id = lerInteiro();
     
         try {
-            Cliente cliente = clienteDAO.buscarPorId(id);
+            Cliente cliente = clienteDAO.buscarPorId(id_cliente);
             if (cliente != null) {
                 System.out.println(cliente);
             } else {
@@ -91,7 +91,7 @@ public class MenuCliente {
         int id = lerInteiro();
  
         try {
-            boolean removido = clienteDAO.deletar(id);
+            boolean removido = clienteDAO.deletar(id_cliente);
             if (removido) {
                 System.out.println("Cliente deletado com sucesso!");
             } else {
