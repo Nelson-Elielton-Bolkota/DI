@@ -110,4 +110,15 @@ public class MenuCliente {
             System.out.println("Erro ao atualizar: " + e.getMessage());
         }
     }
+
+    
+    private int lerInteiro() {
+        while (true) {
+            try {
+                return Integer.parseInt(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.print("Digite um número válido: ");
+            }
+        }
+    }
 }
