@@ -34,7 +34,6 @@ public class MenuCliente {
                 case 1 -> cadastrar();
                 case 2 -> listar();
                 case 3 -> buscar();
-                case 4 -> atualizar();
                 case 5 -> deletar();
                 case 0 -> System.out.println("Voltando...");
                 default -> System.out.println("Opção Invalida");
