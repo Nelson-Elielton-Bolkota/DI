@@ -10,7 +10,7 @@ import model.Produto;
 
 public class ItemPedidoDAO {
     public void salvar(ItemPedido item_pedido) throws SQLException{
-        String sql = "insert into itempedido(quantidade, preco_Unitario) values(?,?)";
+        String sql = "insert into item_pedidos(quantidade, preco_Unitario) values(?,?)";
 
         try(Connection conn = Conexao.conectar();
         PreparedStatement ps = conn.prepareStatement(sql)){
@@ -21,7 +21,7 @@ public class ItemPedidoDAO {
     }
 
     public List<ItemPedido> buscarTodos() throws SQLException {
-    String sql = "select id, id_pedido, id_produto, quantidade, preco_Unitario from itempedido order by id";
+    String sql = "select id, id_pedido, id_produto, quantidade, preco_Unitario from item_pedidos order by id";
     List<ItemPedido> lista = new ArrayList<>();
 
     ProdutoDAO produtoDAO = new ProdutoDAO();
