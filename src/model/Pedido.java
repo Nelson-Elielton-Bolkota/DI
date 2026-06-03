@@ -26,7 +26,7 @@ public class Pedido {
 
      // Construtor para criação de pedido
      public Pedido(Cliente cliente){
-          this(0, cliente, StatusPedido.ABERTO, LocalDateTime.now(), new ArrayList<>());
+          this(0, cliente, StatusPedido.FILA, LocalDateTime.now(), new ArrayList<>());
      }
 
      public int getId(){

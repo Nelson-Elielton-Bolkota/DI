@@ -13,8 +13,18 @@ public class ProcessadorThreads implements Runnable{
 
     @Override
     public void run() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'run'");
+        System.out.println("[THREAD] Processador de pedidos em background iniciado.");
+
+        while (rodando) {
+            try {
+                processarCiclo();
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                System.out.println("[THREAD] Processador interrompido.");
+                Thread.currentThread().interrupt();
+                rodando = false;
+            }
+        }
     }
 
     public void processarCiclo(){
@@ -28,7 +38,7 @@ public class ProcessadorThreads implements Runnable{
             try(PreparedStatement ps = conn.prepareStatement(sqlBusca);
                 ResultSet rs = ps.executeQuery()){
                     if (rs.next()) {
-                        idPedido = rs.getInt(idPedido);
+                        idPedido = rs.getInt("id_pedido");
                     }
                 }
                 if (idPedido == -1) {
