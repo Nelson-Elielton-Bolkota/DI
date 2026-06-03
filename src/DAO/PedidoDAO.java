@@ -36,7 +36,7 @@ public class PedidoDAO {
             }
         }
 
-        String sqlPedido = "INSERT INTO pedidos(id_cliente, dataCriacao, statusPedido) VALUES (?, ?, ?)";
+        String sqlPedido = "INSERT INTO pedidos(id_cliente, data_criacao, status) VALUES (?, ?, ?)";
         int idPedidoGerado;
         try (PreparedStatement ps = conn.prepareStatement(sqlPedido, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, pedido.getCliente().getId());
@@ -49,7 +49,7 @@ public class PedidoDAO {
             idPedidoGerado = rs.getInt(1);
         }
 
-        String sqlItem = "INSERT INTO itempedido(id_pedido, id_produto, quantidade, precoUnitario) VALUES (?, ?, ?, ?)";
+        String sqlItem = "INSERT INTO item_pedidos(id_pedido, id_produto, quantidade, preco_unitario) VALUES (?, ?, ?, ?)";
         String sqlDesconto = "UPDATE produtos SET estoque = estoque - ? WHERE id_produto = ?";
 
         for (ItemPedido item : pedido.getItens()) {
@@ -78,7 +78,7 @@ public class PedidoDAO {
 }
 
    public List<Pedido> buscarTodos() throws SQLException {
-    String sql = "SELECT id_pedido, id_cliente, dataCriacao, statusPedido FROM pedidos ORDER BY id_pedido";
+    String sql = "SELECT id_pedido, id_cliente, data_criacao, status FROM pedidos ORDER BY id_pedido";
     List<Pedido> lista = new ArrayList<>();
 
     try (Connection conn = Conexao.conectar();
@@ -100,7 +100,7 @@ public class PedidoDAO {
             }
 
             List<ItemPedido> itens = new ArrayList<>();
-            String sqlItens = "SELECT id_item, id_produto, quantidade FROM itempedido WHERE id_pedido = ?";
+            String sqlItens = "SELECT id, id_produto, quantidade FROM item_pedidos WHERE id_pedido = ?";
             try (PreparedStatement psI = conn.prepareStatement(sqlItens)) {
                 psI.setInt(1, idPedido);
                 ResultSet rsI = psI.executeQuery();
@@ -121,15 +121,15 @@ public class PedidoDAO {
                             );
                         }
                     }
-                    itens.add(new ItemPedido(rsI.getInt("id_item"), produto, rsI.getInt("quantidade")));
+                    itens.add(new ItemPedido(rsI.getInt("id"), produto, rsI.getInt("quantidade")));
                 }
             }
 
             lista.add(new Pedido(
                 idPedido,
                 cliente,
-                StatusPedido.valueOf(rs.getString("statusPedido")),
-                rs.getTimestamp("dataCriacao").toLocalDateTime(),
+                StatusPedido.valueOf(rs.getString("status")),
+                rs.getTimestamp("data_criacao").toLocalDateTime(),
                 itens
             ));
         }
@@ -140,7 +140,7 @@ public class PedidoDAO {
 
     public void relatorioTotalPorCliente() throws SQLException {
         String sqlPedidos = "SELECT id_pedido, id_cliente FROM pedidos";
-        String sqlItens = "SELECT quantidade, precoUnitario FROM itempedido WHERE id_pedido = ?";
+        String sqlItens = "SELECT quantidade, preco_Unitario FROM item_pedidos WHERE id_pedido = ?";
 
         System.out.println("=== RELATÓRIO: TOTAL POR CLIENTE ===");
         System.out.printf("%-25s %-15s %-15s%n", "Cliente", "Pedidos", "Valor Total");
@@ -161,7 +161,7 @@ public class PedidoDAO {
                     psItens.setInt(1, idPedido);
                     ResultSet rsItens = psItens.executeQuery();
                     while (rsItens.next()) {
-                        valorPedido += rsItens.getInt("quantidade") * rsItens.getDouble("precoUnitario");
+                        valorPedido += rsItens.getInt("quantidade") * rsItens.getDouble("preco_Unitario");
                     }
                 }
 
@@ -187,7 +187,7 @@ public class PedidoDAO {
     }
 
     public void relatorioProdutosMaisVendidos() throws SQLException {
-        String sqlItens = "SELECT id_produto, quantidade FROM itempedido";
+        String sqlItens = "SELECT id_produto, quantidade FROM item_pedidos";
 
         System.out.println("=== RELATÓRIO: PRODUTOS MAIS VENDIDOS ===");
         System.out.printf("%-30s %-15s%n", "Produto", "Qtd Vendida");
