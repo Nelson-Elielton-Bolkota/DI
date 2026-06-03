@@ -102,9 +102,10 @@
         }
         
         private boolean emailValido(String email) {
-        return email != null && email.matches("^[\\w.+-]+@[\\w-]+\\.[\\w.-]+$");
-    }
-    
+            return email != null && email.toLowerCase().endsWith("@")
+            && email.length() > "@".length();
+}
+
         private int lerInteiro() {
             while (true) {
                 try {
