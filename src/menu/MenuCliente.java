@@ -45,6 +45,10 @@
             String nome = scanner.nextLine();
             System.out.println("Email= ");
             String email = scanner.nextLine();
+            while (!emailValido(email)) {
+            System.out.println("Email inválido! Por favor, digite um formato correto (ex: nome@email.com): ");
+            email = scanner.nextLine().trim();
+        }
         
         try {
                 clienteDAO.salvar(new Cliente(nome, email));
@@ -102,9 +106,13 @@
         }
         
         private boolean emailValido(String email) {
-            return email != null && email.toLowerCase().endsWith("@")
-            && email.length() > "@".length();
-}
+        if (email == null || email.trim().isEmpty()) {
+            return false;
+        }
+        
+        String formatoValido = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        return email.matches(formatoValido);
+        }
 
         private int lerInteiro() {
             while (true) {
